@@ -14,7 +14,6 @@ public class Main {
         int col = 0;
         while (scanner.hasNextLine()) {
             String line = scanner.nextLine();
-            int rowLength = line.length();
             col = 0;
             while(line.length() > col)
             {
@@ -133,12 +132,66 @@ public class Main {
                         col += 3;
                 }
                 else if(currentCh == '"'){
+                    col++;
+                    System.out.println("STRING " + row + ":" + col);
+                    while(true){
+                        if(line.charAt(col) == '\\' && line.charAt(col + 1) == '"')
+                        {
+                            col += 2;
+                        }
+                        else if(line.charAt(col) == '\\' && line.charAt(col + 1) == '\\')
+                        {
+                            col += 2;
+                        }
+                        else if(line.charAt(col) == '"'){
+                           col++;
+                           break;
+                        }
+                        else
+                            col++;
+                    }
+                }
+                else if ((currentCh <= '9' && currentCh >= '0') || currentCh == '+' || currentCh == '-') {
+
+                        if(currentCh == '0' && line.charAt(col+1) == 'b'){
+                            System.out.println("NUMBER " + row + ":" + (col+1));
+                            col += 2;
+                            while(true)
+                            {
+                                if(line.charAt(col) == 0 || line.charAt(col) == 1)
+                                    col++;
+                                else
+                                    break;
+                            }
+                        }
+                        else if(currentCh == '0' && line.charAt(col+1) == 'x'){
+                            System.out.println("NUMBER " + row + ":" + (col+1));
+                            col += 2;
+                            while(true)
+                            {
+                                if((line.charAt(col) <= '9' && line.charAt(col) >= '0') || (line.charAt(col) <= 'F' && line.charAt(col) >= 'A') ||  (line.charAt(col) <= 'f' && line.charAt(col) >= 'a'))
+                                    col++;
+                                else
+                                    break;
+                            }
+                        }
+                        else
+                        {
+                            System.out.println("NUMBER " + row + ":" + (col+1));
+                            col ++;
+                            while(true)
+                            {
+                                if((line.charAt(col) <= '9' && line.charAt(col) >= '0'))
+                                    col++;
+                                else
+                                    break;
+                            }
+                        }
 
                 }
                 else {
                     System.out.println("moin");
                     col++;
-                    rowLength--;
                 }
             }
             row++;
