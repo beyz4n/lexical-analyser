@@ -187,14 +187,176 @@ public class Main {
                         }
                         else
                         {
+                            String number = "" + line.charAt(col);
+                            int currentcol = col+1;
+                            while(  (line.length() - 1) >= col+1 && line.charAt(col+1) != ' ' && line.charAt(col+1) != '(' && line.charAt(col+1) != ')'  && line.charAt(col+1) != '{' && line.charAt(col+1) != '}'  && line.charAt(col+1) != '[' && line.charAt(col+1) != ']'){
+                                number +=  line.charAt(currentcol);
+                                currentcol++;
+                            }
+
+                            if(number.contains(".")){
+                                if(number.charAt(0) == '+' || number.charAt(0) == '-' || (number.charAt(0) >= '0' && number.charAt(0) <= '9') ) {
+                                    int currentIndex = 1;
+                                    while(true){
+                                        if(number.charAt(currentIndex) >= '0' && number.charAt(currentIndex) <= '9'){
+                                            currentIndex++;
+                                        }
+                                        else if(number.charAt(currentIndex) != '.') {
+                                            System.out.println("LEXICAL ERROR [" + row + ":" + (col +1) + "]: Invalid token '" + number + "'" );
+                                            System.exit(1);
+                                        }
+                                        else{
+                                            break;
+                                        }
+                                    }
+                                    currentIndex++;
+                                    if(number.charAt(currentIndex) >= '0' && number.charAt(currentIndex) <='9'){
+                                        currentIndex++;
+                                        while(true){
+                                            if(number.charAt(currentIndex) >= '0' && number.charAt(currentIndex) <= '9'){
+                                                currentIndex++;
+                                            }
+                                            else{
+                                                break;
+                                            }
+                                        }
+                                    }
+                                    if(number.charAt(currentIndex) == 'E' || number.charAt(currentIndex) == 'e'){
+                                        currentIndex++;
+                                        if(number.charAt(currentIndex) == '+' || number.charAt(currentIndex) == '-' || (number.charAt(currentIndex) >= '0' && number.charAt(currentIndex) <= '9') ){
+                                            while(number.length() > currentIndex){
+                                                if(number.charAt(currentIndex) >= '0' && number.charAt(currentIndex) <= '9'){
+                                                    currentIndex++;
+                                                }
+                                                else{
+                                                    System.out.println("LEXICAL ERROR [" + row + ":" + (col +1) + "]: Invalid token '" + number + "'" );
+                                                    System.exit(1);
+                                                }
+                                            }
+                                            System.out.println("NUMBER " + row + ":" + (col+1));
+                                            col += number.length();
+                                        }
+                                    }
+                                    else if(number.length() == currentIndex){
+                                        System.out.println("NUMBER " + row + ":" + (col+1));
+                                        col += number.length();
+                                    }
+                                    else{
+                                        System.out.println("LEXICAL ERROR [" + row + ":" + (col +1) + "]: Invalid token '" + number + "'" );
+                                        System.exit(1);
+                                    }
+                                }
+
+                                if(number.charAt(0) == '.'){
+                                    int currentIndex = 1;
+                                    if(number.charAt(currentIndex) >= '0' && number.charAt(currentIndex) <='9'){
+                                        currentIndex++;
+                                        while(true){
+                                            if(number.charAt(currentIndex) >= '0' && number.charAt(currentIndex) <= '9'){
+                                                currentIndex++;
+                                            }
+                                            else{
+                                                break;
+                                            }
+                                        }
+                                    }
+                                    if(number.charAt(currentIndex) == 'E' || number.charAt(currentIndex) == 'e'){
+                                        currentIndex++;
+                                        if(number.charAt(currentIndex) == '+' || number.charAt(currentIndex) == '-' || (number.charAt(currentIndex) >= '0' && number.charAt(currentIndex) <= '9') ){
+
+                                            if(!(number.charAt(currentIndex) >= '0' && number.charAt(currentIndex) <= '9') && !(number.charAt(currentIndex+1) >= '0' && number.charAt(currentIndex+1) <= '9')){
+                                                System.out.println("LEXICAL ERROR [" + row + ":" + (col +1) + "]: Invalid token '" + number + "'" );
+                                                System.exit(1);
+                                            }
+                                            while(number.length() > currentIndex){
+                                                if(number.charAt(currentIndex) >= '0' && number.charAt(currentIndex) <= '9'){
+                                                    currentIndex++;
+                                                }
+                                                else{
+                                                    System.out.println("LEXICAL ERROR [" + row + ":" + (col +1) + "]: Invalid token '" + number + "'" );
+                                                    System.exit(1);
+                                                }
+                                            }
+                                            System.out.println("NUMBER " + row + ":" + (col+1));
+                                            col += number.length();
+                                        }
+                                    }
+                                    else if(number.length() == currentIndex){
+                                        System.out.println("NUMBER " + row + ":" + (col+1));
+                                        col += number.length();
+                                    }
+                                    else{
+                                        System.out.println("LEXICAL ERROR [" + row + ":" + (col +1) + "]: Invalid token '" + number + "'" );
+                                        System.exit(1);
+                                    }
+                                }
+
+                            }
+                            else if(number.contains("E") || number.contains("e")){
+                                int currentIndex = 0;
+                                if(number.charAt(currentIndex) == '+' || number.charAt(currentIndex) == '-' || (number.charAt(currentIndex) >= '0' && number.charAt(currentIndex) <= '9') ){
+                                    if(!(number.charAt(currentIndex) >= '0' && number.charAt(currentIndex) <= '9') && !(number.charAt(currentIndex+1) >= '0' && number.charAt(currentIndex+1) <= '9')){
+                                        System.out.println("LEXICAL ERROR [" + row + ":" + (col +1) + "]: Invalid token '" + number + "'" );
+                                        System.exit(1);
+                                    }
+                                    currentIndex++;
+                                    while(true){
+                                        if(number.charAt(currentIndex) >= '0' && number.charAt(currentIndex) <= '9'){
+                                            currentIndex++;
+                                        }
+                                        else if(number.charAt(currentIndex) == 'E' || number.charAt(currentIndex) == 'e'){
+                                            break;
+                                        }
+                                        else{
+                                            System.out.println("LEXICAL ERROR [" + row + ":" + (col +1) + "]: Invalid token '" + number + "'" );
+                                            System.exit(1);
+                                        }
+                                    }
+
+                                    currentIndex++;
+                                    if(number.charAt(currentIndex) == '+' || number.charAt(currentIndex) == '-' || (number.charAt(currentIndex) >= '0' && number.charAt(currentIndex) <= '9') ){
+
+                                        if(!(number.charAt(currentIndex) >= '0' && number.charAt(currentIndex) <= '9') && !(number.charAt(currentIndex+1) >= '0' && number.charAt(currentIndex+1) <= '9')){
+                                            System.out.println("LEXICAL ERROR [" + row + ":" + (col +1) + "]: Invalid token '" + number + "'" );
+                                            System.exit(1);
+                                        }
+                                        while(number.length() > currentIndex){
+                                            if(number.charAt(currentIndex) >= '0' && number.charAt(currentIndex) <= '9'){
+                                                currentIndex++;
+                                            }
+                                            else{
+                                                System.out.println("LEXICAL ERROR [" + row + ":" + (col +1) + "]: Invalid token '" + number + "'" );
+                                                System.exit(1);
+                                            }
+                                        }
+                                        System.out.println("NUMBER " + row + ":" + (col+1));
+                                        col += number.length();
+                                    }
+                                }
+                            }
+                            else if(number.charAt(0) == '+' || number.charAt(0) == '-' || (number.charAt(0) >= '0' && number.charAt(0) <= '9') ){
+                                int currentIndex = 1;
+                                if(number.length() > currentIndex && !(number.charAt(currentIndex) >= '0' && number.charAt(currentIndex) <= '9') && !(number.charAt(currentIndex+1) >= '0' && number.charAt(currentIndex+1) <= '9')){
+                                    System.out.println("LEXICAL ERROR [" + row + ":" + (col +1) + "]: Invalid token '" + number + "'" );
+                                    System.exit(1);
+                                }
+                                while(number.length() > currentIndex){
+                                    if(number.charAt(currentIndex) >= '0' && number.charAt(currentIndex) <= '9'){
+                                        currentIndex++;
+                                    }
+                                    else{
+                                        System.out.println("LEXICAL ERROR [" + row + ":" + (col +1) + "]: Invalid token '" + number + "'" );
+                                        System.exit(1);
+                                    }
+                                }
+                                System.out.println("NUMBER " + row + ":" + (col+1));
+                                col += number.length();
+                            }
 
                             System.out.println("NUMBER " + row + ":" + (col+1));
                             col ++;
-
                         }
-
                 }
-                //  else if for .5 or + .5
 
                 else {
                     System.out.println("moin");
