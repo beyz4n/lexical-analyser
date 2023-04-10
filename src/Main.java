@@ -7,8 +7,10 @@ import java.util.*;
 public class Main {
 
     public static void main(String[] args) throws FileNotFoundException {
-
-        File file = new File("input.txt");
+        System.out.print("Enter the name of the input file: ");
+        Scanner sc = new Scanner(System.in);
+        String input = sc.nextLine();
+        File file = new File(input);
         Scanner scanner = new Scanner(file);
         int row= 1;
         int col = 0;
@@ -48,6 +50,14 @@ public class Main {
                 else if(currentCh == '}'){
                     col++;
                     System.out.println("RIGHTCURLYB " + row + ":" + col);
+                }
+                else if(currentCh == '.' || currentCh == '+' || currentCh =='-') {
+                    if ((line.length() - 1) >= (col + 1) && line.charAt(col + 1) != ' ' && line.charAt(col + 1) != '(' && line.charAt(col + 1) != ')' && line.charAt(col + 1) != '{' && line.charAt(col + 1) != '}' && line.charAt(col + 1) != '[' && line.charAt(col + 1) != ']') {
+                        System.out.println("IDENTIFIER " + row + ":" + (col + 1));
+                        col++;
+                    } else {
+                        System.out.println("LEXICAL ERROR [" + row + ":" + (col + 1) + "]: Invalid token '"); // ADD THE WHOLE IDENTIFIER
+                    }
                 }
                 else if( (currentCh >= 'a' && currentCh <= 'z')  ||  currentCh == '!' ||  currentCh == '*'  ||  currentCh == '/' ||  currentCh == ':' ||  currentCh == '<' ||  currentCh == '>' ||  currentCh == '=' ||  currentCh == '?') {
                     if(line.substring(col).length() >= 4 && line.substring(col, col + 4).equals("true") && line.charAt(col + 4) == ' ') {
@@ -126,7 +136,7 @@ public class Main {
                 }
                 else if(currentCh == '\''){
                     System.out.println("CHAR " + row + ":" + col);
-                    if(line.charAt(col + 1) == '\\')
+                    if( (line.charAt(col + 1) == '\\' && line.charAt(col + 2) == '\'') || (line.charAt(col + 1) == '\\' && line.charAt(col + 2) == '\\')  )
                         col += 4;
                     else
                         col += 3;
@@ -151,7 +161,7 @@ public class Main {
                             col++;
                     }
                 }
-                else if ((currentCh <= '9' && currentCh >= '0') || currentCh == '+' || currentCh == '-') {
+                else if ((currentCh <= '9' && currentCh >= '0') || currentCh == '+' || currentCh == '-' || currentCh == '.') {
 
                         if(currentCh == '0' && line.charAt(col+1) == 'b'){
                             System.out.println("NUMBER " + row + ":" + (col+1));
@@ -177,18 +187,15 @@ public class Main {
                         }
                         else
                         {
+
                             System.out.println("NUMBER " + row + ":" + (col+1));
                             col ++;
-                            while(true)
-                            {
-                                if((line.charAt(col) <= '9' && line.charAt(col) >= '0'))
-                                    col++;
-                                else
-                                    break;
-                            }
+
                         }
 
                 }
+                //  else if for .5 or + .5
+
                 else {
                     System.out.println("moin");
                     col++;
