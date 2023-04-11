@@ -51,8 +51,9 @@ public class Main {
                     col++;
                     System.out.println("RIGHTCURLYB " + row + ":" + col);
                 }
-                else if(currentCh == '.' || currentCh == '+' || currentCh =='-') {
-                    if ((line.length() - 1) >= (col + 1) || line.charAt(col + 1) != ' ' || line.charAt(col + 1) != '(' || line.charAt(col + 1) != ')' || line.charAt(col + 1) != '{' || line.charAt(col + 1) != '}' || line.charAt(col + 1) != '[' || line.charAt(col + 1) != ']') {
+                else if((currentCh == '.' || currentCh == '+' || currentCh =='-') && !(line.charAt(col+1) <= '9' && line.charAt(col+1) >= '0') && line.charAt(col + 1) != '.') {
+                    if (line.length() >= (col + 1) || line.charAt(col + 1) == ' ' || line.charAt(col + 1) == '(' || line.charAt(col + 1) == ')' ||
+                            line.charAt(col + 1) == '{' || line.charAt(col + 1) == '}' || line.charAt(col + 1) == '[' || line.charAt(col + 1) == ']') {
                         System.out.println("IDENTIFIER " + row + ":" + (col + 1));
                         col++;
                     } else {
@@ -190,11 +191,16 @@ public class Main {
                         {
                             String number = "" + line.charAt(col);
                             int currentcol = col+1;
-                            while(  (line.length() - 1) >= col+1 && line.charAt(col+1) != ' ' && line.charAt(col+1) != '(' && line.charAt(col+1) != ')'  && line.charAt(col+1) != '{' && line.charAt(col+1) != '}'  && line.charAt(col+1) != '[' && line.charAt(col+1) != ']'){
-                                number +=  line.charAt(currentcol);
-                                currentcol++;
+                            while(  (line.length() - 1) >= currentcol && ((line.length() - 1) >= currentcol && line.charAt(currentcol) != ' ' && line.charAt(currentcol) != '('
+                                    && line.charAt(currentcol) != ')'  && line.charAt(currentcol) != '{' && line.charAt(currentcol) != '}'  && line.charAt(col+1) != '[' && line.charAt(col+1) != ']')){
+                                if((line.length() - 1) >= currentcol) {
+                                    number += line.charAt(currentcol);
+                                    currentcol++;
+                                }
+                                else{
+                                    break;
+                                }
                             }
-
                             if(number.contains(".")){
                                 if(number.charAt(0) == '+' || number.charAt(0) == '-' || (number.charAt(0) >= '0' && number.charAt(0) <= '9') ) {
                                     int currentIndex = 1;
@@ -214,7 +220,7 @@ public class Main {
                                     if(number.charAt(currentIndex) >= '0' && number.charAt(currentIndex) <='9'){
                                         currentIndex++;
                                         while(true){
-                                            if(number.charAt(currentIndex) >= '0' && number.charAt(currentIndex) <= '9'){
+                                            if( (number.length() - 1) >= currentIndex && number.charAt(currentIndex) >= '0' && number.charAt(currentIndex) <= '9'){
                                                 currentIndex++;
                                             }
                                             else{
@@ -222,11 +228,12 @@ public class Main {
                                             }
                                         }
                                     }
-                                    if(number.charAt(currentIndex) == 'E' || number.charAt(currentIndex) == 'e'){
+                                    if((number.length() - 1) >= currentIndex && (number.charAt(currentIndex) == 'E' || number.charAt(currentIndex) == 'e')){
                                         currentIndex++;
                                         if(number.charAt(currentIndex) == '+' || number.charAt(currentIndex) == '-' || (number.charAt(currentIndex) >= '0' && number.charAt(currentIndex) <= '9') ){
+                                            currentIndex++;
                                             while(number.length() > currentIndex){
-                                                if(number.charAt(currentIndex) >= '0' && number.charAt(currentIndex) <= '9'){
+                                                if((number.length() - 1) >= currentIndex && number.charAt(currentIndex) >= '0' && number.charAt(currentIndex) <= '9'){
                                                     currentIndex++;
                                                 }
                                                 else{
@@ -235,11 +242,13 @@ public class Main {
                                                 }
                                             }
                                             System.out.println("NUMBER " + row + ":" + (col+1));
+                                            System.out.println(number);
                                             col += number.length();
                                         }
                                     }
                                     else if(number.length() == currentIndex){
                                         System.out.println("NUMBER " + row + ":" + (col+1));
+                                        System.out.println(number);
                                         col += number.length();
                                     }
                                     else{
@@ -253,7 +262,7 @@ public class Main {
                                     if(number.charAt(currentIndex) >= '0' && number.charAt(currentIndex) <='9'){
                                         currentIndex++;
                                         while(true){
-                                            if(number.charAt(currentIndex) >= '0' && number.charAt(currentIndex) <= '9'){
+                                            if((number.length() - 1) >= currentIndex && number.charAt(currentIndex) >= '0' && number.charAt(currentIndex) <= '9'){
                                                 currentIndex++;
                                             }
                                             else{
@@ -261,7 +270,7 @@ public class Main {
                                             }
                                         }
                                     }
-                                    if(number.charAt(currentIndex) == 'E' || number.charAt(currentIndex) == 'e'){
+                                    if((number.length() - 1) >= currentIndex && (number.charAt(currentIndex) == 'E' || number.charAt(currentIndex) == 'e')){
                                         currentIndex++;
                                         if(number.charAt(currentIndex) == '+' || number.charAt(currentIndex) == '-' || (number.charAt(currentIndex) >= '0' && number.charAt(currentIndex) <= '9') ){
 
@@ -270,7 +279,7 @@ public class Main {
                                                 System.exit(1);
                                             }
                                             while(number.length() > currentIndex){
-                                                if(number.charAt(currentIndex) >= '0' && number.charAt(currentIndex) <= '9'){
+                                                if((line.length() - 1) >= currentIndex && number.charAt(currentIndex) >= '0' && number.charAt(currentIndex) <= '9'){
                                                     currentIndex++;
                                                 }
                                                 else{
@@ -279,11 +288,13 @@ public class Main {
                                                 }
                                             }
                                             System.out.println("NUMBER " + row + ":" + (col+1));
+                                            System.out.println(number);
                                             col += number.length();
                                         }
                                     }
                                     else if(number.length() == currentIndex){
                                         System.out.println("NUMBER " + row + ":" + (col+1));
+                                        System.out.println(number);
                                         col += number.length();
                                     }
                                     else{
@@ -306,6 +317,7 @@ public class Main {
                                             currentIndex++;
                                         }
                                         else if(number.charAt(currentIndex) == 'E' || number.charAt(currentIndex) == 'e'){
+                                            currentIndex++;
                                             break;
                                         }
                                         else{
@@ -331,6 +343,7 @@ public class Main {
                                             }
                                         }
                                         System.out.println("NUMBER " + row + ":" + (col+1));
+                                        System.out.println(number);
                                         col += number.length();
                                     }
                                 }
@@ -351,11 +364,14 @@ public class Main {
                                     }
                                 }
                                 System.out.println("NUMBER " + row + ":" + (col+1));
+                                System.out.println(number);
                                 col += number.length();
                             }
-
+/*
                             System.out.println("NUMBER " + row + ":" + (col+1));
                             col ++;
+                            */
+
                         }
                 }
 
