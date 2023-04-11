@@ -52,11 +52,12 @@ public class Main {
                     System.out.println("RIGHTCURLYB " + row + ":" + col);
                 }
                 else if(currentCh == '.' || currentCh == '+' || currentCh =='-') {
-                    if ((line.length() - 1) >= (col + 1) && line.charAt(col + 1) != ' ' && line.charAt(col + 1) != '(' && line.charAt(col + 1) != ')' && line.charAt(col + 1) != '{' && line.charAt(col + 1) != '}' && line.charAt(col + 1) != '[' && line.charAt(col + 1) != ']') {
+                    if ((line.length() - 1) >= (col + 1) || line.charAt(col + 1) != ' ' || line.charAt(col + 1) != '(' || line.charAt(col + 1) != ')' || line.charAt(col + 1) != '{' || line.charAt(col + 1) != '}' || line.charAt(col + 1) != '[' || line.charAt(col + 1) != ']') {
                         System.out.println("IDENTIFIER " + row + ":" + (col + 1));
                         col++;
                     } else {
                         System.out.println("LEXICAL ERROR [" + row + ":" + (col + 1) + "]: Invalid token '"); // ADD THE WHOLE IDENTIFIER
+                        System.exit(1);
                     }
                 }
                 else if( (currentCh >= 'a' && currentCh <= 'z')  ||  currentCh == '!' ||  currentCh == '*'  ||  currentCh == '/' ||  currentCh == ':' ||  currentCh == '<' ||  currentCh == '>' ||  currentCh == '=' ||  currentCh == '?') {
