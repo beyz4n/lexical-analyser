@@ -242,13 +242,11 @@ public class Main {
                                                 }
                                             }
                                             System.out.println("NUMBER " + row + ":" + (col+1));
-                                            System.out.println(number);
                                             col += number.length();
                                         }
                                     }
                                     else if(number.length() == currentIndex){
                                         System.out.println("NUMBER " + row + ":" + (col+1));
-                                        System.out.println(number);
                                         col += number.length();
                                     }
                                     else{
@@ -288,13 +286,11 @@ public class Main {
                                                 }
                                             }
                                             System.out.println("NUMBER " + row + ":" + (col+1));
-                                            System.out.println(number);
                                             col += number.length();
                                         }
                                     }
                                     else if(number.length() == currentIndex){
                                         System.out.println("NUMBER " + row + ":" + (col+1));
-                                        System.out.println(number);
                                         col += number.length();
                                     }
                                     else{
@@ -343,7 +339,6 @@ public class Main {
                                             }
                                         }
                                         System.out.println("NUMBER " + row + ":" + (col+1));
-                                        System.out.println(number);
                                         col += number.length();
                                     }
                                 }
@@ -364,7 +359,6 @@ public class Main {
                                     }
                                 }
                                 System.out.println("NUMBER " + row + ":" + (col+1));
-                                System.out.println(number);
                                 col += number.length();
                             }
 /*
