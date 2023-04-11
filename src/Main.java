@@ -160,12 +160,25 @@ public class Main {
                 }
                 else if(currentCh == '\''){
                     tokens += "CHAR " + row + ":" + col + "\n";
+                    if(line.charAt(col + 1) == '\''){
+                        System.out.println("LEXICAL ERROR [" + row + ":" + (col +1) + "]: Invalid token '" + "''" + "'" );
+                        printer.print("LEXICAL ERROR [" + row + ":" + (col +1) + "]: Invalid token '" + "''" + "'" );
+                        printer.close();
+                        System.exit(1);
+                    }
+
                     if( (line.charAt(col + 1) == '\\' && line.charAt(col + 2) == '\'') || (line.charAt(col + 1) == '\\' && line.charAt(col + 2) == '\\')  )
                         col += 4;
                     else
                         col += 3;
                 }
                 else if(currentCh == '"'){
+                    if(line.charAt(col + 1) == '"'){
+                        System.out.println("LEXICAL ERROR [" + row + ":" + (col +1) + "]: Invalid token '" + "\"\"" + "'" );
+                        printer.print("LEXICAL ERROR [" + row + ":" + (col +1) + "]: Invalid token '" + "\"\"" + "'" );
+                        printer.close();
+                        System.exit(1);
+                    }
                     col++;
                     tokens += "STRING " + row + ":" + col + "\n";
                     while(true){
