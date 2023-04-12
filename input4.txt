@@ -1,0 +1,18 @@
++a
+besawre3
++.b
+"ko"
+'k'
+''
+""
+'\n'
+"\n"
++abc
++ abc
+*a9
+*+
+def1
+?bnk
+my-boy
+my_no
+be.b
