@@ -59,7 +59,7 @@ public class Main {
                 else if((currentCh == '.' || currentCh == '+' || currentCh =='-') && !(line.charAt(col+1) <= '9' && line.charAt(col+1) >= '0') && line.charAt(col + 1) != '.' && !(line.charAt(col+1) <= 'z' && line.charAt(col+1) >= 'a')) {
                     String identifier = "";
                     int currentcol = col+1;
-                    while(  (line.length() - 1) >= currentcol && ((line.length() - 1) >= currentcol && line.charAt(currentcol) != ' ' && line.charAt(currentcol) != '('
+                    while(  (line.length() - 1) >= currentcol && ((line.length() - 1) >= currentcol && line.charAt(currentcol) != ' ' && line.charAt(col + 1) == '~' && line.charAt(currentcol) != '('
                             && line.charAt(currentcol) != ')'  && line.charAt(currentcol) != '{' && line.charAt(currentcol) != '}'  && line.charAt(col+1) != '[' && line.charAt(col+1) != ']')){
                         if((line.length() - 1) >= currentcol) {
                             identifier += line.charAt(currentcol);
@@ -69,7 +69,7 @@ public class Main {
                             break;
                         }
                     }
-                    if (line.length() >= (col + 1) || line.charAt(col + 1) == ' ' || line.charAt(col + 1) == '(' || line.charAt(col + 1) == ')' ||
+                    if (line.length() >= (col + 1) || line.charAt(col + 1) == ' ' || line.charAt(col + 1) == '~' || line.charAt(col + 1) == '(' || line.charAt(col + 1) == ')' ||
                             line.charAt(col + 1) == '{' || line.charAt(col + 1) == '}' || line.charAt(col + 1) == '[' || line.charAt(col + 1) == ']') {
                         tokens += "IDENTIFIER " + row + ":" + (col + 1) + "\n";
                         col++;
@@ -81,31 +81,32 @@ public class Main {
                     }
                 }
                 else if( (currentCh >= 'a' && currentCh <= 'z')  ||  currentCh == '!' ||  currentCh == '*'  ||  currentCh == '/' ||  currentCh == ':' ||  currentCh == '<' ||  currentCh == '>' ||  currentCh == '=' ||  currentCh == '?') {
-                    if(line.substring(col).length() >= 4 && line.substring(col, col + 4).equals("true") && line.charAt(col + 4) == ' ') {
+
+                    if(line.substring(col).length() >= 4 && line.substring(col, col + 4).equals("true") && (line.charAt(col + 4) == ' ' || line.charAt(col + 4) == '~')) {
                         tokens += "BOOLEAN " + row + ":" + (col+1) + "\n";
                         col = col + 4;
                     }
-                    else if(line.substring(col).length() >= 5 && line.substring(col, col + 5).equals("false") && line.charAt(col + 5) == ' ') {
+                    else if(line.substring(col).length() >= 5 && line.substring(col, col + 5).equals("false") && (line.charAt(col + 5) == ' ' || line.charAt(col + 5) == '~')) {
                         tokens += "BOOLEAN " + row+ ":" + (col+1) + "\n";
                         col = col + 5;
                     }
-                    else if(line.substring(col).length() >= 6 && line.substring(col, col + 6).equals("define") && line.charAt(col + 6) == ' '){
+                    else if(line.substring(col).length() >= 6 && line.substring(col, col + 6).equals("define") && (line.charAt(col + 6) == ' ' || line.charAt(col + 6) == '~')){
                         tokens += "DEFINE " + row + ":" + (col+1) + "\n";
                         col = col + 6;
                     }
-                    else if(line.substring(col).length() >= 3 && line.substring(col, col + 3).equals("let") && line.charAt(col + 3) == ' '){
+                    else if(line.substring(col).length() >= 3 && line.substring(col, col + 3).equals("let") && (line.charAt(col + 3) == ' ' || line.charAt(col + 3) == '~')){
                         tokens += "LET " + row + ":" + (col+1) + "\n";
                         col = col + 3;
                     }
-                    else if(line.substring(col).length() >= 4 && line.substring(col, col + 4).equals("cond") && line.charAt(col + 4) == ' '){
+                    else if(line.substring(col).length() >= 4 && line.substring(col, col + 4).equals("cond") &&(line.charAt(col + 4) == ' ' || line.charAt(col + 4) == '~')){
                         tokens += "COND " + row + ":" + (col+1) + "\n";
                         col = col + 4;
                     }
-                    else if(line.substring(col).length() >= 2 && line.substring(col, col + 2).equals("if") && line.charAt(col + 2) == ' '){
+                    else if(line.substring(col).length() >= 2 && line.substring(col, col + 2).equals("if") && (line.charAt(col + 2) == ' ' || line.charAt(col + 2) == '~')){
                         tokens += "IF " + row + ":" + (col+1) + "\n";
                         col = col + 2;
                     }
-                    else if(line.substring(col).length() >= 5 && line.substring(col, col + 5).equals("begin") && line.charAt(col + 5) == ' '){
+                    else if(line.substring(col).length() >= 5 && line.substring(col, col + 5).equals("begin") && (line.charAt(col + 5) == ' ' || line.charAt(col + 5) == '~')){
                         tokens += "BEGIN " + row + ":" + (col+1) + "\n";
                         col = col + 5;
                     }
@@ -114,7 +115,7 @@ public class Main {
                         String identifier = "" + line.charAt(col);
                         boolean isIdentifier = true;
                         currentcol++;
-                        while(  (line.length() - 1) >= currentcol && line.charAt(currentcol) != ' ' && line.charAt(currentcol) != '(' && line.charAt(currentcol) != ')'  && line.charAt(currentcol) != '{' && line.charAt(currentcol) != '}'  && line.charAt(currentcol) != '[' && line.charAt(currentcol) != ']'){
+                        while(  (line.length() - 1) >= currentcol && line.charAt(currentcol) != ' ' && line.charAt(currentcol) != '~'  && line.charAt(currentcol) != '(' && line.charAt(currentcol) != ')'  && line.charAt(currentcol) != '{' && line.charAt(currentcol) != '}'  && line.charAt(currentcol) != '[' && line.charAt(currentcol) != ']'){
                             if( (line.charAt(currentcol) >= 'a' && line.charAt(currentcol) <= 'z') || (line.charAt(currentcol) >= '0' && line.charAt(currentcol) <= '9') || (line.charAt(currentcol) == '.' || (line.charAt(currentcol) == '+'|| (line.charAt(currentcol) == '-' ))))
                             {
                                 identifier += line.charAt(currentcol);
@@ -137,6 +138,8 @@ public class Main {
                                     states.add(line.indexOf("]", currentcol));
                                 if(line.indexOf(" ", currentcol) != -1)
                                     states.add(line.indexOf(" ", currentcol));
+                                if(line.indexOf("~", currentcol) != -1)
+                                    states.add(line.indexOf("~", currentcol));
 
                                 states.add(line.length());
 
@@ -216,7 +219,7 @@ public class Main {
                             col += 2;
                             while(true)
                             {
-                                if((line.charAt(col) <= '9' && line.charAt(col) >= '0') || (line.charAt(col) <= 'F' && line.charAt(col) >= 'A') ||  (line.charAt(col) <= 'f' && line.charAt(col) >= 'a'))
+                                if((line.length() - 1) >= col && ((line.charAt(col) <= '9' && line.charAt(col) >= '0') || (line.charAt(col) <= 'F' && line.charAt(col) >= 'A') ||  (line.charAt(col) <= 'f' && line.charAt(col) >= 'a')))
                                     col++;
                                 else
                                     break;
@@ -226,7 +229,7 @@ public class Main {
                         {
                             String number = "" + line.charAt(col);
                             int currentcol = col+1;
-                            while(  (line.length() - 1) >= currentcol && ((line.length() - 1) >= currentcol && line.charAt(currentcol) != ' ' && line.charAt(currentcol) != '('
+                            while(  (line.length() - 1) >= currentcol && (line.charAt(currentcol) != '~' && line.charAt(currentcol) != ' ' && line.charAt(currentcol) != '('
                                     && line.charAt(currentcol) != ')'  && line.charAt(currentcol) != '{' && line.charAt(currentcol) != '}'  && line.charAt(col+1) != '[' && line.charAt(col+1) != ']')){
                                 if((line.length() - 1) >= currentcol) {
                                     number += line.charAt(currentcol);
@@ -254,7 +257,7 @@ public class Main {
                                         }
                                     }
                                     currentIndex++;
-                                    if(number.charAt(currentIndex) >= '0' && number.charAt(currentIndex) <='9'){
+                                    if((number.length() - 1) >= currentIndex && number.charAt(currentIndex) >= '0' && number.charAt(currentIndex) <='9'){
                                         currentIndex++;
                                         while(true){
                                             if( (number.length() - 1) >= currentIndex && number.charAt(currentIndex) >= '0' && number.charAt(currentIndex) <= '9'){
