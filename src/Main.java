@@ -265,22 +265,52 @@ public class Main {
             }
         }
         if (currentCh == '0' && line.charAt(col + 1) == 'b') {
-            tokens += "NUMBER " + row + ":" + (col + 1) + "\n";
-            col += 2;
+            boolean isBinary = true;
+            int counterCol = col + 2;
             while (true) {
-                if ((line.length() - 1) >= col && (line.charAt(col) == '0' || line.charAt(col) == '1'))
-                    col++;
-                else
+                if ((number.length() - 1) >= col && (line.charAt(counterCol) == '0' || line.charAt(counterCol) == '1')) {
+                    counterCol++;
+                    if(number.length() == counterCol){
+                        break;
+                    }
+                }
+                else{
+                    isBinary = false;
+                    System.out.println("LEXICAL ERROR [" + row + ":" + (col + 1) + "]: Invalid token '" + number + "'");
+                    printer.print("LEXICAL ERROR [" + row + ":" + (col + 1) + "]: Invalid token '" + number + "'");
+                    printer.close();
+                    System.exit(1);
                     break;
+                }
+            }
+            if(isBinary){
+                tokens += "NUMBER " + row + ":" + (col + 1) + "\n";
+                col += number.length();
             }
         } else if (currentCh == '0' && line.charAt(col + 1) == 'x') {
-            tokens += "NUMBER " + row + ":" + (col + 1) + "\n";
-            col += 2;
+            boolean isHex = true;
+            int counterCol = col + 2;
             while (true) {
-                if ((line.length() - 1) >= col && ((line.charAt(col) <= '9' && line.charAt(col) >= '0') || (line.charAt(col) <= 'F' && line.charAt(col) >= 'A') || (line.charAt(col) <= 'f' && line.charAt(col) >= 'a')))
-                    col++;
-                else
+                if ((number.length() - 1) >= col && ( (line.charAt(counterCol) <= '9' && line.charAt(counterCol) >= '0') || (line.charAt(counterCol) <= 'F' && line.charAt(counterCol) >= 'A') || (line.charAt(counterCol) <= 'f' && line.charAt(counterCol) >= 'a') )) {
+                    counterCol++;
+                    if(number.length() == counterCol){
+                        break;
+                    }
+                }
+                else{
+                    isHex = false;
+                    System.out.println("LEXICAL ERROR [" + row + ":" + (col + 1) + "]: Invalid token '" + number + "'");
+                    printer.print("LEXICAL ERROR [" + row + ":" + (col + 1) + "]: Invalid token '" + number + "'");
+                    printer.close();
+                    System.exit(1);
                     break;
+                }
+            }
+            if(isHex){
+                tokens += "NUMBER " + row + ":" + (col + 1) + "\n";
+                col += number.length();
+                System.out.println(tokens);
+                System.out.println(number);
             }
         } else {
             if (number.contains(".")) {
