@@ -184,23 +184,28 @@ public class Main {
                 } else if (currentCh == '\'') {
                     String chars;
                     int currentcol = col + 1;
-                    int index = line.indexOf("'", currentcol);
-                    while(index != -1 && line.length() - 1 >= currentcol){
-                        if(line.charAt(index - 1) == '\\') {
-                            index = line.indexOf("'", currentcol);
-                            currentcol++;
+                    boolean isAChar = false;
+                    while(line.length() - 1 >= currentcol){
+                        if(line.indexOf('\'', col + 1) == -1)
+                            break;
+                        if(line.charAt(currentcol) == '\\'){
+                            currentcol += 2;
+                        }
+                        else if(line.charAt(currentcol) == '\''){
+                            isAChar = true;
+                            break;
                         }
                         else
-                            break;
+                            currentcol++;
                     }
-                    if(index == -1){
+                    if(!isAChar){
                         chars = line.substring(col);
                         System.out.println("LEXICAL ERROR [" + row + ":" + (col + 1) + "]: Invalid token '" + chars + "'");
                         printer.print("LEXICAL ERROR [" + row + ":" + (col + 1) + "]: Invalid token '" + chars + "'");
                         printer.close();
                         System.exit(1);
                     }
-                    chars = line.substring(col, index+1);
+                    chars = line.substring(col, currentcol+1);
                     if (chars.length() == 3 && chars.charAt(1) != '\\' && chars.charAt(1) != '\'' && chars.charAt(2) == '\'') {
                         tokens += "CHAR " + row + ":" + (col + 1) + "\n";
                         col += 3;
@@ -216,23 +221,28 @@ public class Main {
                 } else if (currentCh == '"') {
                     String str;
                     int currentcol = col + 1;
-                    int index = line.indexOf("\"", currentcol);
-                    while(index != -1 && line.length() - 1 >= currentcol){
-                        if(line.charAt(index - 1) == '\\') {
-                            index = line.indexOf("\"", currentcol);
-                            currentcol++;
+                    boolean isAString = false;
+                    while(line.length() - 1 >= currentcol){
+                        if(line.indexOf('"', col + 1) == -1)
+                            break;
+                        if(line.charAt(currentcol) == '\\'){
+                            currentcol += 2;
+                        }
+                        else if(line.charAt(currentcol) == '"'){
+                            isAString = true;
+                            break;
                         }
                         else
-                            break;
+                            currentcol++;
                     }
-                    if(index == -1){
+                    if(!isAString){
                         str = line.substring(col);
                         System.out.println("LEXICAL ERROR [" + row + ":" + (col + 1) + "]: Invalid token '" + str + "'");
                         printer.print("LEXICAL ERROR [" + row + ":" + (col + 1) + "]: Invalid token '" + str + "'");
                         printer.close();
                         System.exit(1);
                     }
-                    str = line.substring(col, index+1);
+                    str = line.substring(col, currentcol+1);
                     if (str.length() > 2 && str.charAt(str.length() - 1) == '"' && !str.contains("\\")) {
                         tokens += "STRING " + row + ":" + (col + 1) + "\n";
                         col += str.length();
@@ -333,8 +343,6 @@ public class Main {
             if (isHex) {
                 tokens += "NUMBER " + row + ":" + (col + 1) + "\n";
                 col += number.length();
-                System.out.println(tokens);
-                System.out.println(number);
             }
         } else {
             if (number.contains(".")) {
