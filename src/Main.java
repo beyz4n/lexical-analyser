@@ -6,35 +6,51 @@ import java.util.Scanner;
 import java.util.*;
 
 public class Main {
+
+    // Variables to keep track of row and column values
     public static int row = 1;
     public static int col = 0;
-    public static String tokens = "";
-    public static PrintWriter printer;
+
+    public static String tokens = ""; // Variable to keep all messages for tokens
+    public static PrintWriter printer; // Declaration for PrintWriter in order to print to the output file
 
     public static void main(String[] args) throws FileNotFoundException {
+
+        // Prompt to user to write the file name.
         System.out.print("Enter the name of the input file: ");
+
+        // To take name of input file from the user.
         Scanner sc = new Scanner(System.in);
         String input = sc.nextLine();
         File file = new File(input);
+
+        // Create a file for output.
         File output = new File("output.txt");
         printer = new PrintWriter(output);
+
+        // If given file name does not match with the existing files, prompt user to write the file name correctly.
         while (!file.exists()) {
             System.out.print("You entered a file that does not exist. Please enter the name of the input file correctly: ");
             sc = new Scanner(System.in);
             input = sc.nextLine();
             file = new File(input);
         }
+
+        // Scanner to read inside the given file
         Scanner scanner = new Scanner(file);
-        while (scanner.hasNextLine()) {
-            String line = scanner.nextLine();
+
+        while (scanner.hasNextLine()) { // Check if input file has next line
+            String line = scanner.nextLine(); // Variable to keep one line of the code
             col = 0;
-            while (line.length() > col) {
-                char currentCh = line.charAt(col);
-                if (currentCh == ' ') {
+            while (line.length() > col) { // Check if end of the line
+                char currentCh = line.charAt(col); // Variable to keep character at that column
+                if (currentCh == ' ') { // Eliminate spaces
                     col++;
-                } else if (currentCh == '~') {
+                } else if (currentCh == '~') { // Don't read what's on that line after tilde sign (~)
                     col = 0;
                     break;
+
+                // Detect brackets
                 } else if (currentCh == '(') {
                     col++;
                     tokens += "LEFTPAR " + row + ":" + col + "\n";
@@ -181,24 +197,32 @@ public class Main {
                             col += identifier.length();
                         }
                     }
+
+                // Detect characters
                 } else if (currentCh == '\'') {
-                    String chars;
+                    String chars; // variable to keep char
                     int currentcol = col + 1;
                     boolean isAChar = false;
+
+                    // Figure out where the character ends
                     while(line.length() - 1 >= currentcol){
                         if(line.indexOf('\'', col + 1) == -1)
+                        // If there is no second apostrophe after the first one, break the loop.
                             break;
                         if(line.charAt(currentcol) == '\\'){
+                        // If character is \', this can not end the character so increment currentcol by not 1 but 2.
                             currentcol += 2;
                         }
                         else if(line.charAt(currentcol) == '\''){
+                        // if apostrophe for end of the character is found, break the loop.
                             isAChar = true;
                             break;
                         }
                         else
                             currentcol++;
                     }
-                    if(!isAChar){
+
+                    if(!isAChar){ // If it is not a string give an error and exit the system.
                         chars = line.substring(col);
                         System.out.println("LEXICAL ERROR [" + row + ":" + (col + 1) + "]: Invalid token '" + chars + "'");
                         printer.print("LEXICAL ERROR [" + row + ":" + (col + 1) + "]: Invalid token '" + chars + "'");
@@ -218,24 +242,32 @@ public class Main {
                         printer.close();
                         System.exit(1);
                     }
+
+                // Detect strings
                 } else if (currentCh == '"') {
-                    String str;
+                    String str; // variable to keep string
                     int currentcol = col + 1;
                     boolean isAString = false;
+
+                    // Figure out where the string ends
                     while(line.length() - 1 >= currentcol){
                         if(line.indexOf('"', col + 1) == -1)
+                        // If there is no second quotation mark after the first one, break the loop.
                             break;
                         if(line.charAt(currentcol) == '\\'){
+                        // If character is \", this can not end the string so increment currentcol by not 1 but 2.
                             currentcol += 2;
                         }
                         else if(line.charAt(currentcol) == '"'){
+                        // if quotation mark for end of the string is found, break the loop.
                             isAString = true;
                             break;
                         }
                         else
                             currentcol++;
                     }
-                    if(!isAString){
+
+                    if(!isAString){ // If it is not a string give an error and exit the system.
                         str = line.substring(col);
                         System.out.println("LEXICAL ERROR [" + row + ":" + (col + 1) + "]: Invalid token '" + str + "'");
                         printer.print("LEXICAL ERROR [" + row + ":" + (col + 1) + "]: Invalid token '" + str + "'");
@@ -517,7 +549,5 @@ public class Main {
                 col += number.length();
             }
         }
-
     }
-
 }
