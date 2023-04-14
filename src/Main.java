@@ -90,63 +90,7 @@ public class Main {
                     //IDENTIFIER & KEYWORDS & BOOLEAN
                 } else if ((currentCh >= 'a' && currentCh <= 'z') || currentCh == '!' || currentCh == '*' || currentCh == '/' || currentCh == ':' || currentCh == '<' || currentCh == '>' || currentCh == '=' || currentCh == '?') {
                     //KEYWORDS
-                    if (line.substring(col).length() >= 4 && line.substring(col, col + 4).equals("true")) {
-                        if (line.substring(col).length() == 4) {
-                            tokens += "BOOLEAN " + row + ":" + (col + 1) + "\n";
-                            col = col + 4;
-                        } else if (line.charAt(col + 4) == ' ' || line.charAt(col + 4) == '~' || line.charAt(col + 4) == '(' || line.charAt(col + 4) == ')' || line.charAt(col + 4) == '[' || line.charAt(col + 4) == ']' || line.charAt(col + 4) == '{' || line.charAt(col + 4) == '}' || col + 4 == line.length() - 1) {
-                            tokens += "BOOLEAN " + row + ":" + (col + 1) + "\n";
-                            col = col + 4;
-                        }
-                    } else if (line.substring(col).length() >= 5 && line.substring(col, col + 5).equals("false")) {
-                        if (line.substring(col).length() == 5) {
-                            tokens += "BOOLEAN " + row + ":" + (col + 1) + "\n";
-                            col = col + 5;
-                        } else if (line.charAt(col + 5) == ' ' || line.charAt(col + 5) == '~' || line.charAt(col + 5) == '(' || line.charAt(col + 5) == ')' || line.charAt(col + 5) == '[' || line.charAt(col + 5) == ']' || line.charAt(col + 5) == '{' || line.charAt(col + 5) == '}' || col + 5 == line.length() - 1) {
-                            tokens += "BOOLEAN " + row + ":" + (col + 1) + "\n";
-                            col = col + 5;
-                        }
-                    } else if (line.substring(col).length() >= 6 && line.substring(col, col + 6).equals("define")) {
-                        if (line.substring(col).length() == 6) {
-                            tokens += "DEFINE " + row + ":" + (col + 1) + "\n";
-                            col = col + 6;
-                        } else if (line.charAt(col + 6) == ' ' || line.charAt(col + 6) == '~' || line.charAt(col + 6) == '(' || line.charAt(col + 6) == ')' || line.charAt(col + 6) == '[' || line.charAt(col + 6) == ']' || line.charAt(col + 6) == '{' || line.charAt(col + 6) == '}' || col + 6 == line.length() - 1) {
-                            tokens += "DEFINE " + row + ":" + (col + 1) + "\n";
-                            col = col + 6;
-                        }
-                    } else if (line.substring(col).length() >= 3 && line.substring(col, col + 3).equals("let")) {
-                        if (line.substring(col).length() == 3) {
-                            tokens += "LET " + row + ":" + (col + 1) + "\n";
-                            col = col + 3;
-                        } else if (line.charAt(col + 3) == ' ' || line.charAt(col + 3) == '~' || line.charAt(col + 3) == '(' || line.charAt(col + 3) == ')' || line.charAt(col + 3) == '[' || line.charAt(col + 3) == ']' || line.charAt(col + 3) == '{' || line.charAt(col + 3) == '}' || col + 3 == line.length() - 1) {
-                            tokens += "LET " + row + ":" + (col + 1) + "\n";
-                            col = col + 3;
-                        }
-                    } else if (line.substring(col).length() >= 4 && line.substring(col, col + 4).equals("cond")) {
-                        if (line.substring(col).length() == 4) {
-                            tokens += "COND " + row + ":" + (col + 1) + "\n";
-                            col = col + 4;
-                        } else if (line.charAt(col + 4) == ' ' || line.charAt(col + 4) == '~' || line.charAt(col + 4) == '(' || line.charAt(col + 4) == ')' || line.charAt(col + 4) == '[' || line.charAt(col + 4) == ']' || line.charAt(col + 4) == '{' || line.charAt(col + 4) == '}' || col + 4 == line.length() - 1) {
-                            tokens += "COND " + row + ":" + (col + 1) + "\n";
-                            col = col + 4;
-                        }
-                    } else if (line.substring(col).length() >= 2 && line.substring(col, col + 2).equals("if")) {
-                        if (line.substring(col).length() == 2) {
-                            tokens += "IF " + row + ":" + (col + 1) + "\n";
-                            col = col + 2;
-                        } else if (line.charAt(col + 2) == ' ' || line.charAt(col + 2) == '~' || line.charAt(col + 2) == '(' || line.charAt(col + 2) == ')' || line.charAt(col + 2) == '[' || line.charAt(col + 2) == ']' || line.charAt(col + 2) == '{' || line.charAt(col + 2) == '}' || col + 2 == line.length() - 1) {
-                            tokens += "IF " + row + ":" + (col + 1) + "\n";
-                            col = col + 2;
-                        }
-                    } else if (line.substring(col).length() >= 5 && line.substring(col, col + 5).equals("begin")) {
-                        if (line.substring(col).length() == 5) {
-                            tokens += "BEGIN " + row + ":" + (col + 1) + "\n";
-                            col = col + 5;
-                        } else if (line.charAt(col + 5) == ' ' || line.charAt(col + 5) == '~' || line.charAt(col + 5) == '(' || line.charAt(col + 5) == ')' || line.charAt(col + 5) == '[' || line.charAt(col + 5) == ']' || line.charAt(col + 5) == '{' || line.charAt(col + 5) == '}' || col + 5 == line.length() - 1) {
-                            tokens += "BEGIN " + row + ":" + (col + 1) + "\n";
-                            col = col + 5;
-                        }
-                    } else {
+                    if(!(isAKeyword(line, "true") || isAKeyword(line, "false") || isAKeyword(line, "define") || isAKeyword(line, "let") || isAKeyword(line, "cond") || isAKeyword(line, "if") || isAKeyword(line, "begin"))){
                         int currentcol = col;
                         String identifier = "" + line.charAt(col);
                         boolean isIdentifier = true;
@@ -303,6 +247,26 @@ public class Main {
         printer.close();
         System.exit(1);
     }
+
+    public static boolean isAKeyword(String line, String keyword){
+        String str;
+        if(keyword.equals("true") || keyword.equals("false"))
+            str = "boolean";
+        else
+            str = keyword;
+        if (line.substring(col).length() >= keyword.length() && line.substring(col, col + keyword.length()).equals(keyword)) {
+            if (line.substring(col).length() == keyword.length()) {
+                tokens +=  str.toUpperCase() + " " + row + ":" + (col + 1) + "\n";
+                col = col + keyword.length();
+                return true;
+            } else if (line.charAt(col + keyword.length()) == ' ' || line.charAt(col + keyword.length()) == '~' || line.charAt(col + keyword.length()) == '(' || line.charAt(col + keyword.length()) == ')' || line.charAt(col + keyword.length()) == '[' || line.charAt(col + keyword.length()) == ']' || line.charAt(col + keyword.length()) == '{' || line.charAt(col + keyword.length()) == '}' || col + keyword.length() == line.length() - 1) {
+                tokens +=  str.toUpperCase() + " " + row + ":" + (col + 1) + "\n";
+                col = col + keyword.length();
+                return true;
+            }
+        }
+        return false;
+    }
     public static void isNumber(String line, char currentCh) {
         String number = "" + currentCh;
         int currentcol = col + 1;
@@ -326,12 +290,7 @@ public class Main {
                     }
                 } else {
                     isBinary = false;
-                    System.out.println(tokens);
-                    printer.println(tokens);
-                    System.out.println("LEXICAL ERROR [" + row + ":" + (col + 1) + "]: Invalid token '" + number + "'");
-                    printer.print("LEXICAL ERROR [" + row + ":" + (col + 1) + "]: Invalid token '" + number + "'");
-                    printer.close();
-                    System.exit(1);
+                    printErrorMessages(number);
                     break;
                 }
             }
@@ -350,12 +309,7 @@ public class Main {
                     }
                 } else {
                     isHex = false;
-                    System.out.println(tokens);
-                    printer.println(tokens);
-                    System.out.println("LEXICAL ERROR [" + row + ":" + (col + 1) + "]: Invalid token '" + number + "'");
-                    printer.print("LEXICAL ERROR [" + row + ":" + (col + 1) + "]: Invalid token '" + number + "'");
-                    printer.close();
-                    System.exit(1);
+                    printErrorMessages(number);
                     break;
                 }
             }
@@ -371,12 +325,7 @@ public class Main {
                         if (number.charAt(currentIndex) >= '0' && number.charAt(currentIndex) <= '9') {
                             currentIndex++;
                         } else if (number.charAt(currentIndex) != '.') {
-                            System.out.println(tokens);
-                            printer.println(tokens);
-                            System.out.println("LEXICAL ERROR [" + row + ":" + (col + 1) + "]: Invalid token '" + number + "'");
-                            printer.print("LEXICAL ERROR [" + row + ":" + (col + 1) + "]: Invalid token '" + number + "'");
-                            printer.close();
-                            System.exit(1);
+                            printErrorMessages(number);
                         } else {
                             break;
                         }
@@ -392,12 +341,7 @@ public class Main {
                             }
                         }
                     }else {
-                        System.out.println(tokens);
-                        printer.println(tokens);
-                        System.out.println("LEXICAL ERROR [" + row + ":" + (col + 1) + "]: Invalid token '" + number + "'");
-                        printer.print("LEXICAL ERROR [" + row + ":" + (col + 1) + "]: Invalid token '" + number + "'");
-                        printer.close();
-                        System.exit(1);
+                        printErrorMessages(number);
                     }
                     if ((number.length() - 1) >= currentIndex && (number.charAt(currentIndex) == 'E' || number.charAt(currentIndex) == 'e')) {
                         currentIndex++;
@@ -407,12 +351,7 @@ public class Main {
                                 if ((number.length() - 1) >= currentIndex && number.charAt(currentIndex) >= '0' && number.charAt(currentIndex) <= '9') {
                                     currentIndex++;
                                 } else {
-                                    System.out.println(tokens);
-                                    printer.println(tokens);
-                                    System.out.println("LEXICAL ERROR [" + row + ":" + (col + 1) + "]: Invalid token '" + number + "'");
-                                    printer.print("LEXICAL ERROR [" + row + ":" + (col + 1) + "]: Invalid token '" + number + "'");
-                                    printer.close();
-                                    System.exit(1);
+                                    printErrorMessages(number);
                                 }
                             }
                             tokens += "NUMBER " + row + ":" + (col + 1) + "\n";
@@ -422,12 +361,7 @@ public class Main {
                         tokens += "NUMBER " + row + ":" + (col + 1) + "\n";
                         col += number.length();
                     } else {
-                        System.out.println(tokens);
-                        printer.println(tokens);
-                        System.out.println("LEXICAL ERROR [" + row + ":" + (col + 1) + "]: Invalid token '" + number + "'");
-                        printer.print("LEXICAL ERROR [" + row + ":" + (col + 1) + "]: Invalid token '" + number + "'");
-                        printer.close();
-                        System.exit(1);
+                        printErrorMessages(number);
                     }
                 }
 
@@ -448,23 +382,13 @@ public class Main {
                         if (number.charAt(currentIndex) == '+' || number.charAt(currentIndex) == '-' || (number.charAt(currentIndex) >= '0' && number.charAt(currentIndex) <= '9')) {
 
                             if (!(number.charAt(currentIndex) >= '0' && number.charAt(currentIndex) <= '9') && !(number.charAt(currentIndex + 1) >= '0' && number.charAt(currentIndex + 1) <= '9')) {
-                                System.out.println(tokens);
-                                printer.println(tokens);
-                                System.out.println("LEXICAL ERROR [" + row + ":" + (col + 1) + "]: Invalid token '" + number + "'");
-                                printer.print("LEXICAL ERROR [" + row + ":" + (col + 1) + "]: Invalid token '" + number + "'");
-                                printer.close();
-                                System.exit(1);
+                                printErrorMessages(number);
                             }
                             while (number.length() > currentIndex) {
                                 if ((line.length() - 1) >= currentIndex && number.charAt(currentIndex) >= '0' && number.charAt(currentIndex) <= '9') {
                                     currentIndex++;
                                 } else {
-                                    System.out.println(tokens);
-                                    printer.println(tokens);
-                                    System.out.println("LEXICAL ERROR [" + row + ":" + (col + 1) + "]: Invalid token '" + number + "'");
-                                    printer.print("LEXICAL ERROR [" + row + ":" + (col + 1) + "]: Invalid token '" + number + "'");
-                                    printer.close();
-                                    System.exit(1);
+                                    printErrorMessages(number);
                                 }
                             }
                             tokens += "NUMBER " + row + ":" + (col + 1) + "\n";
@@ -474,12 +398,7 @@ public class Main {
                         tokens += "NUMBER " + row + ":" + (col + 1) + "\n";
                         col += number.length();
                     } else {
-                        System.out.println(tokens);
-                        printer.println(tokens);
-                        System.out.println("LEXICAL ERROR [" + row + ":" + (col + 1) + "]: Invalid token '" + number + "'");
-                        printer.print("LEXICAL ERROR [" + row + ":" + (col + 1) + "]: Invalid token '" + number + "'");
-                        printer.close();
-                        System.exit(1);
+                        printErrorMessages(number);
                     }
                 }
 
@@ -487,12 +406,7 @@ public class Main {
                 int currentIndex = 0;
                 if (number.charAt(currentIndex) == '+' || number.charAt(currentIndex) == '-' || (number.charAt(currentIndex) >= '0' && number.charAt(currentIndex) <= '9')) {
                     if (!(number.charAt(currentIndex) >= '0' && number.charAt(currentIndex) <= '9') && !(number.charAt(currentIndex + 1) >= '0' && number.charAt(currentIndex + 1) <= '9')) {
-                        System.out.println(tokens);
-                        printer.println(tokens);
-                        System.out.println("LEXICAL ERROR [" + row + ":" + (col + 1) + "]: Invalid token '" + number + "'");
-                        printer.print("LEXICAL ERROR [" + row + ":" + (col + 1) + "]: Invalid token '" + number + "'");
-                        printer.close();
-                        System.exit(1);
+                        printErrorMessages(number);
                     }
                     currentIndex++;
                     while (true) {
@@ -502,12 +416,7 @@ public class Main {
                             currentIndex++;
                             break;
                         } else {
-                            System.out.println(tokens);
-                            printer.println(tokens);
-                            System.out.println("LEXICAL ERROR [" + row + ":" + (col + 1) + "]: Invalid token '" + number + "'");
-                            printer.print("LEXICAL ERROR [" + row + ":" + (col + 1) + "]: Invalid token '" + number + "'");
-                            printer.close();
-                            System.exit(1);
+                            printErrorMessages(number);
                         }
                     }
 
@@ -515,23 +424,13 @@ public class Main {
                     if (number.length() > 2 && (number.charAt(currentIndex) == '+' || number.charAt(currentIndex) == '-' || (number.charAt(currentIndex) >= '0' && number.charAt(currentIndex) <= '9'))) {
 
                         if (!(number.charAt(currentIndex) >= '0' && number.charAt(currentIndex) <= '9') && !(number.charAt(currentIndex + 1) >= '0' && number.charAt(currentIndex + 1) <= '9')) {
-                            System.out.println(tokens);
-                            printer.println(tokens);
-                            System.out.println("LEXICAL ERROR [" + row + ":" + (col + 1) + "]: Invalid token '" + number + "'");
-                            printer.print("LEXICAL ERROR [" + row + ":" + (col + 1) + "]: Invalid token '" + number + "'");
-                            printer.close();
-                            System.exit(1);
+                            printErrorMessages(number);
                         }
                         while (number.length() > currentIndex) {
                             if (number.charAt(currentIndex) >= '0' && number.charAt(currentIndex) <= '9') {
                                 currentIndex++;
                             } else {
-                                System.out.println(tokens);
-                                printer.println(tokens);
-                                System.out.println("LEXICAL ERROR [" + row + ":" + (col + 1) + "]: Invalid token '" + number + "'");
-                                printer.print("LEXICAL ERROR [" + row + ":" + (col + 1) + "]: Invalid token '" + number + "'");
-                                printer.close();
-                                System.exit(1);
+                                printErrorMessages(number);
                             }
                         }
                         tokens += "NUMBER " + row + ":" + (col + 1) + "\n";
@@ -541,12 +440,7 @@ public class Main {
                         tokens += "NUMBER " + row + ":" + (col + 1) + "\n";
                         col += number.length();
                     }else {
-                        System.out.println(tokens);
-                        printer.println(tokens);
-                        System.out.println("LEXICAL ERROR [" + row + ":" + (col + 1) + "]: Invalid token '" + number + "'");
-                        printer.print("LEXICAL ERROR [" + row + ":" + (col + 1) + "]: Invalid token '" + number + "'");
-                        printer.close();
-                        System.exit(1);
+                        printErrorMessages(number);
                     }
                 }
 
@@ -592,12 +486,9 @@ public class Main {
         int i = 0;
         while(i < str.length()){
             if((str.charAt(i) <= '9' && str.charAt(i) >= '0' )|| str.charAt(i) == '+' || str.charAt(i) == '.' || str.charAt(i) == '.')
-            {
                 i++;
-            }
-            else{
+            else
                 return false;
-            }
         }
         return true;
     }
