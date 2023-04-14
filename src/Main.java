@@ -402,6 +402,11 @@ public class Main {
                                 break;
                             }
                         }
+                    }else {
+                        System.out.println("LEXICAL ERROR [" + row + ":" + (col + 1) + "]: Invalid token '" + number + "'");
+                        printer.print("LEXICAL ERROR [" + row + ":" + (col + 1) + "]: Invalid token '" + number + "'");
+                        printer.close();
+                        System.exit(1);
                     }
                     if ((number.length() - 1) >= currentIndex && (number.charAt(currentIndex) == 'E' || number.charAt(currentIndex) == 'e')) {
                         currentIndex++;
@@ -502,7 +507,7 @@ public class Main {
                     }
 
                     currentIndex++;
-                    if (number.charAt(currentIndex) == '+' || number.charAt(currentIndex) == '-' || (number.charAt(currentIndex) >= '0' && number.charAt(currentIndex) <= '9')) {
+                    if (number.length() > 2 && (number.charAt(currentIndex) == '+' || number.charAt(currentIndex) == '-' || (number.charAt(currentIndex) >= '0' && number.charAt(currentIndex) <= '9'))) {
 
                         if (!(number.charAt(currentIndex) >= '0' && number.charAt(currentIndex) <= '9') && !(number.charAt(currentIndex + 1) >= '0' && number.charAt(currentIndex + 1) <= '9')) {
                             System.out.println("LEXICAL ERROR [" + row + ":" + (col + 1) + "]: Invalid token '" + number + "'");
@@ -523,8 +528,18 @@ public class Main {
                         tokens += "NUMBER " + row + ":" + (col + 1) + "\n";
                         col += number.length();
                     }
+                    else if(number.length() == 2 && !number.contains("e") && !number.contains("E") && (number.charAt(1) >= '0' && number.charAt(1) <= '9')){
+                        tokens += "NUMBER " + row + ":" + (col + 1) + "\n";
+                        col += number.length();
+                    }else {
+                        System.out.println("LEXICAL ERROR [" + row + ":" + (col + 1) + "]: Invalid token '" + number + "'");
+                        printer.print("LEXICAL ERROR [" + row + ":" + (col + 1) + "]: Invalid token '" + number + "'");
+                        printer.close();
+                        System.exit(1);
+                    }
                 }
-            } else if (number.charAt(0) == '+' || number.charAt(0) == '-' || (number.charAt(0) >= '0' && number.charAt(0) <= '9')) {
+
+            } else if ((number.charAt(0) == '+' || number.charAt(0) == '-' || (number.charAt(0) >= '0' && number.charAt(0) <= '9')) && isCorrectNumber(number)) {
                 int currentIndex = 1;
                 if (number.length() > currentIndex && !(number.charAt(currentIndex) >= '0' && number.charAt(currentIndex) <= '9') && !(number.charAt(currentIndex + 1) >= '0' && number.charAt(currentIndex + 1) <= '9')) {
                     System.out.println("LEXICAL ERROR [" + row + ":" + (col + 1) + "]: Invalid token '" + number + "'");
@@ -548,6 +563,25 @@ public class Main {
                 tokens += "NUMBER " + row + ":" + (col + 1) + "\n";
                 col += number.length();
             }
+            else{
+                System.out.println("LEXICAL ERROR [" + row + ":" + (col + 1) + "]: Invalid token '" + number + "'");
+                printer.print("LEXICAL ERROR [" + row + ":" + (col + 1) + "]: Invalid token '" + number + "'");
+                printer.close();
+                System.exit(1);
+            }
         }
+    }
+    public static boolean isCorrectNumber(String str){
+        int i = 0;
+        while(i < str.length()){
+            if((str.charAt(i) <= '9' && str.charAt(i) >= '0' )|| str.charAt(i) == '+' || str.charAt(i) == '.' || str.charAt(i) == '.')
+            {
+                i++;
+            }
+            else{
+                return false;
+            }
+        }
+        return true;
     }
 }
