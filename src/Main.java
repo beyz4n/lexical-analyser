@@ -323,8 +323,8 @@ public class Main {
                 } else {
                     System.out.println(tokens);
                     printer.println(tokens);
-                    System.out.println("LEXICAL ERROR [" + row + ":" + (col + 1) + "]: Undefined token");
-                    printer.print("LEXICAL ERROR [" + row + ":" + (col + 1) + "]: Undefined token");
+                    System.out.println("LEXICAL ERROR [" + row + ":" + (col + 1) + "]: Invalid token '" + currentCh + "'");
+                    printer.print("LEXICAL ERROR [" + row + ":" + (col + 1) + "]: Invalid token '" + currentCh + "'");
                     printer.close();
                     System.exit(1);
                 }
