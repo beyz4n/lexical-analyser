@@ -85,6 +85,8 @@ public class Main {
                     } else if (currentCh == '.' && (line.charAt(col + 1) >= '0' && line.charAt(col + 1) <= '9')) {
                         isNumber(line, currentCh);
                     } else {
+                        System.out.println(tokens);
+                        printer.println(tokens);
                         System.out.println("LEXICAL ERROR [" + row + ":" + (col + 1) + "]: Invalid token '" + str + "'");
                         printer.print("LEXICAL ERROR [" + row + ":" + (col + 1) + "]: Invalid token '" + str + "'");
                         printer.close();
@@ -183,6 +185,8 @@ public class Main {
                                 int min = Collections.min(states);
                                 String edited = line.substring(currentcol, min);
                                 identifier += edited;
+                                System.out.println(tokens);
+                                printer.println(tokens);
                                 System.out.println("LEXICAL ERROR [" + row + ":" + (col + 1) + "]: Invalid token '" + identifier + "'");
                                 printer.print("LEXICAL ERROR [" + row + ":" + (col + 1) + "]: Invalid token '" + identifier + "'");
                                 printer.close();
@@ -224,6 +228,8 @@ public class Main {
 
                     if(!isAChar){ // If it is not a string give an error and exit the system.
                         chars = line.substring(col);
+                        System.out.println(tokens);
+                        printer.println(tokens);
                         System.out.println("LEXICAL ERROR [" + row + ":" + (col + 1) + "]: Invalid token '" + chars + "'");
                         printer.print("LEXICAL ERROR [" + row + ":" + (col + 1) + "]: Invalid token '" + chars + "'");
                         printer.close();
@@ -237,6 +243,8 @@ public class Main {
                         tokens += "CHAR " + row + ":" + (col + 1) + "\n";
                         col += 4;
                     } else {
+                        System.out.println(tokens);
+                        printer.println(tokens);
                         System.out.println("LEXICAL ERROR [" + row + ":" + (col + 1) + "]: Invalid token '" + chars + "'");
                         printer.print("LEXICAL ERROR [" + row + ":" + (col + 1) + "]: Invalid token '" + chars + "'");
                         printer.close();
@@ -269,6 +277,8 @@ public class Main {
 
                     if(!isAString){ // If it is not a string give an error and exit the system.
                         str = line.substring(col);
+                        System.out.println(tokens);
+                        printer.println(tokens);
                         System.out.println("LEXICAL ERROR [" + row + ":" + (col + 1) + "]: Invalid token '" + str + "'");
                         printer.print("LEXICAL ERROR [" + row + ":" + (col + 1) + "]: Invalid token '" + str + "'");
                         printer.close();
@@ -288,6 +298,8 @@ public class Main {
                                 count++;
                             } else {
                                 isValidString = false;
+                                System.out.println(tokens);
+                                printer.println(tokens);
                                 System.out.println("LEXICAL ERROR [" + row + ":" + (col + 1) + "]: Invalid token '" + str + "'");
                                 printer.print("LEXICAL ERROR [" + row + ":" + (col + 1) + "]: Invalid token '" + str + "'");
                                 printer.close();
@@ -299,6 +311,8 @@ public class Main {
                             col += str.length();
                         }
                     } else {
+                        System.out.println(tokens);
+                        printer.println(tokens);
                         System.out.println("LEXICAL ERROR [" + row + ":" + (col + 1) + "]: Invalid token '" + str + "'");
                         printer.print("LEXICAL ERROR [" + row + ":" + (col + 1) + "]: Invalid token '" + str + "'");
                         printer.close();
@@ -307,6 +321,8 @@ public class Main {
                 } else if ((currentCh <= '9' && currentCh >= '0') || currentCh == '+' || currentCh == '-' || currentCh == '.') {
                     isNumber(line, currentCh);
                 } else {
+                    System.out.println(tokens);
+                    printer.println(tokens);
                     System.out.println("LEXICAL ERROR [" + row + ":" + (col + 1) + "]: Undefined token");
                     printer.print("LEXICAL ERROR [" + row + ":" + (col + 1) + "]: Undefined token");
                     printer.close();
@@ -343,6 +359,8 @@ public class Main {
                     }
                 } else {
                     isBinary = false;
+                    System.out.println(tokens);
+                    printer.println(tokens);
                     System.out.println("LEXICAL ERROR [" + row + ":" + (col + 1) + "]: Invalid token '" + number + "'");
                     printer.print("LEXICAL ERROR [" + row + ":" + (col + 1) + "]: Invalid token '" + number + "'");
                     printer.close();
@@ -365,6 +383,8 @@ public class Main {
                     }
                 } else {
                     isHex = false;
+                    System.out.println(tokens);
+                    printer.println(tokens);
                     System.out.println("LEXICAL ERROR [" + row + ":" + (col + 1) + "]: Invalid token '" + number + "'");
                     printer.print("LEXICAL ERROR [" + row + ":" + (col + 1) + "]: Invalid token '" + number + "'");
                     printer.close();
@@ -384,6 +404,8 @@ public class Main {
                         if (number.charAt(currentIndex) >= '0' && number.charAt(currentIndex) <= '9') {
                             currentIndex++;
                         } else if (number.charAt(currentIndex) != '.') {
+                            System.out.println(tokens);
+                            printer.println(tokens);
                             System.out.println("LEXICAL ERROR [" + row + ":" + (col + 1) + "]: Invalid token '" + number + "'");
                             printer.print("LEXICAL ERROR [" + row + ":" + (col + 1) + "]: Invalid token '" + number + "'");
                             printer.close();
@@ -403,6 +425,8 @@ public class Main {
                             }
                         }
                     }else {
+                        System.out.println(tokens);
+                        printer.println(tokens);
                         System.out.println("LEXICAL ERROR [" + row + ":" + (col + 1) + "]: Invalid token '" + number + "'");
                         printer.print("LEXICAL ERROR [" + row + ":" + (col + 1) + "]: Invalid token '" + number + "'");
                         printer.close();
@@ -416,6 +440,8 @@ public class Main {
                                 if ((number.length() - 1) >= currentIndex && number.charAt(currentIndex) >= '0' && number.charAt(currentIndex) <= '9') {
                                     currentIndex++;
                                 } else {
+                                    System.out.println(tokens);
+                                    printer.println(tokens);
                                     System.out.println("LEXICAL ERROR [" + row + ":" + (col + 1) + "]: Invalid token '" + number + "'");
                                     printer.print("LEXICAL ERROR [" + row + ":" + (col + 1) + "]: Invalid token '" + number + "'");
                                     printer.close();
@@ -429,6 +455,8 @@ public class Main {
                         tokens += "NUMBER " + row + ":" + (col + 1) + "\n";
                         col += number.length();
                     } else {
+                        System.out.println(tokens);
+                        printer.println(tokens);
                         System.out.println("LEXICAL ERROR [" + row + ":" + (col + 1) + "]: Invalid token '" + number + "'");
                         printer.print("LEXICAL ERROR [" + row + ":" + (col + 1) + "]: Invalid token '" + number + "'");
                         printer.close();
@@ -453,6 +481,8 @@ public class Main {
                         if (number.charAt(currentIndex) == '+' || number.charAt(currentIndex) == '-' || (number.charAt(currentIndex) >= '0' && number.charAt(currentIndex) <= '9')) {
 
                             if (!(number.charAt(currentIndex) >= '0' && number.charAt(currentIndex) <= '9') && !(number.charAt(currentIndex + 1) >= '0' && number.charAt(currentIndex + 1) <= '9')) {
+                                System.out.println(tokens);
+                                printer.println(tokens);
                                 System.out.println("LEXICAL ERROR [" + row + ":" + (col + 1) + "]: Invalid token '" + number + "'");
                                 printer.print("LEXICAL ERROR [" + row + ":" + (col + 1) + "]: Invalid token '" + number + "'");
                                 printer.close();
@@ -462,6 +492,8 @@ public class Main {
                                 if ((line.length() - 1) >= currentIndex && number.charAt(currentIndex) >= '0' && number.charAt(currentIndex) <= '9') {
                                     currentIndex++;
                                 } else {
+                                    System.out.println(tokens);
+                                    printer.println(tokens);
                                     System.out.println("LEXICAL ERROR [" + row + ":" + (col + 1) + "]: Invalid token '" + number + "'");
                                     printer.print("LEXICAL ERROR [" + row + ":" + (col + 1) + "]: Invalid token '" + number + "'");
                                     printer.close();
@@ -475,6 +507,8 @@ public class Main {
                         tokens += "NUMBER " + row + ":" + (col + 1) + "\n";
                         col += number.length();
                     } else {
+                        System.out.println(tokens);
+                        printer.println(tokens);
                         System.out.println("LEXICAL ERROR [" + row + ":" + (col + 1) + "]: Invalid token '" + number + "'");
                         printer.print("LEXICAL ERROR [" + row + ":" + (col + 1) + "]: Invalid token '" + number + "'");
                         printer.close();
@@ -486,6 +520,8 @@ public class Main {
                 int currentIndex = 0;
                 if (number.charAt(currentIndex) == '+' || number.charAt(currentIndex) == '-' || (number.charAt(currentIndex) >= '0' && number.charAt(currentIndex) <= '9')) {
                     if (!(number.charAt(currentIndex) >= '0' && number.charAt(currentIndex) <= '9') && !(number.charAt(currentIndex + 1) >= '0' && number.charAt(currentIndex + 1) <= '9')) {
+                        System.out.println(tokens);
+                        printer.println(tokens);
                         System.out.println("LEXICAL ERROR [" + row + ":" + (col + 1) + "]: Invalid token '" + number + "'");
                         printer.print("LEXICAL ERROR [" + row + ":" + (col + 1) + "]: Invalid token '" + number + "'");
                         printer.close();
@@ -499,6 +535,8 @@ public class Main {
                             currentIndex++;
                             break;
                         } else {
+                            System.out.println(tokens);
+                            printer.println(tokens);
                             System.out.println("LEXICAL ERROR [" + row + ":" + (col + 1) + "]: Invalid token '" + number + "'");
                             printer.print("LEXICAL ERROR [" + row + ":" + (col + 1) + "]: Invalid token '" + number + "'");
                             printer.close();
@@ -510,6 +548,8 @@ public class Main {
                     if (number.length() > 2 && (number.charAt(currentIndex) == '+' || number.charAt(currentIndex) == '-' || (number.charAt(currentIndex) >= '0' && number.charAt(currentIndex) <= '9'))) {
 
                         if (!(number.charAt(currentIndex) >= '0' && number.charAt(currentIndex) <= '9') && !(number.charAt(currentIndex + 1) >= '0' && number.charAt(currentIndex + 1) <= '9')) {
+                            System.out.println(tokens);
+                            printer.println(tokens);
                             System.out.println("LEXICAL ERROR [" + row + ":" + (col + 1) + "]: Invalid token '" + number + "'");
                             printer.print("LEXICAL ERROR [" + row + ":" + (col + 1) + "]: Invalid token '" + number + "'");
                             printer.close();
@@ -519,6 +559,8 @@ public class Main {
                             if (number.charAt(currentIndex) >= '0' && number.charAt(currentIndex) <= '9') {
                                 currentIndex++;
                             } else {
+                                System.out.println(tokens);
+                                printer.println(tokens);
                                 System.out.println("LEXICAL ERROR [" + row + ":" + (col + 1) + "]: Invalid token '" + number + "'");
                                 printer.print("LEXICAL ERROR [" + row + ":" + (col + 1) + "]: Invalid token '" + number + "'");
                                 printer.close();
@@ -532,6 +574,8 @@ public class Main {
                         tokens += "NUMBER " + row + ":" + (col + 1) + "\n";
                         col += number.length();
                     }else {
+                        System.out.println(tokens);
+                        printer.println(tokens);
                         System.out.println("LEXICAL ERROR [" + row + ":" + (col + 1) + "]: Invalid token '" + number + "'");
                         printer.print("LEXICAL ERROR [" + row + ":" + (col + 1) + "]: Invalid token '" + number + "'");
                         printer.close();
@@ -542,6 +586,8 @@ public class Main {
             } else if ((number.charAt(0) == '+' || number.charAt(0) == '-' || (number.charAt(0) >= '0' && number.charAt(0) <= '9')) && isCorrectNumber(number)) {
                 int currentIndex = 1;
                 if (number.length() > currentIndex && !(number.charAt(currentIndex) >= '0' && number.charAt(currentIndex) <= '9') && !(number.charAt(currentIndex + 1) >= '0' && number.charAt(currentIndex + 1) <= '9')) {
+                    System.out.println(tokens);
+                    printer.println(tokens);
                     System.out.println("LEXICAL ERROR [" + row + ":" + (col + 1) + "]: Invalid token '" + number + "'");
                     printer.print("LEXICAL ERROR [" + row + ":" + (col + 1) + "]: Invalid token '" + number + "'");
                     printer.close();
@@ -554,6 +600,8 @@ public class Main {
                         else
                             break;
                     } else {
+                        System.out.println(tokens);
+                        printer.println(tokens);
                         System.out.println("LEXICAL ERROR [" + row + ":" + (col + 1) + "]: Invalid token '" + number + "'");
                         printer.print("LEXICAL ERROR [" + row + ":" + (col + 1) + "]: Invalid token '" + number + "'");
                         printer.close();
@@ -564,6 +612,8 @@ public class Main {
                 col += number.length();
             }
             else{
+                System.out.println(tokens);
+                printer.println(tokens);
                 System.out.println("LEXICAL ERROR [" + row + ":" + (col + 1) + "]: Invalid token '" + number + "'");
                 printer.print("LEXICAL ERROR [" + row + ":" + (col + 1) + "]: Invalid token '" + number + "'");
                 printer.close();
