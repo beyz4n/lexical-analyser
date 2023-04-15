@@ -50,7 +50,7 @@ public class Main {
                     col = 0;
                     break;
 
-                // Detect brackets
+                    // Detect brackets
                 } else if (currentCh == '(') {
                     col++;
                     tokens += "LEFTPAR " + row + ":" + col + "\n";
@@ -90,44 +90,21 @@ public class Main {
                     //IDENTIFIER & KEYWORDS & BOOLEAN
                 } else if ((currentCh >= 'a' && currentCh <= 'z') || currentCh == '!' || currentCh == '*' || currentCh == '/' || currentCh == ':' || currentCh == '<' || currentCh == '>' || currentCh == '=' || currentCh == '?') {
                     //KEYWORDS
-                    if(!(isAKeyword(line, "true") || isAKeyword(line, "false") || isAKeyword(line, "define") || isAKeyword(line, "let") || isAKeyword(line, "cond") || isAKeyword(line, "if") || isAKeyword(line, "begin"))){
-                        int currentcol = col;
+                    if (!(isAKeyword(line, "true") || isAKeyword(line, "false") || isAKeyword(line, "define") || isAKeyword(line, "let") || isAKeyword(line, "cond") || isAKeyword(line, "if") || isAKeyword(line, "begin"))) {
                         String identifier = "" + line.charAt(col);
                         boolean isIdentifier = true;
-                        currentcol++;
-                        while ((line.length() - 1) >= currentcol && line.charAt(currentcol) != ' ' && line.charAt(currentcol) != '~' && line.charAt(currentcol) != '(' && line.charAt(currentcol) != ')' && line.charAt(currentcol) != '{' && line.charAt(currentcol) != '}' && line.charAt(currentcol) != '[' && line.charAt(currentcol) != ']') {
-                            if ((line.charAt(currentcol) >= 'a' && line.charAt(currentcol) <= 'z') || (line.charAt(currentcol) >= '0' && line.charAt(currentcol) <= '9') || (line.charAt(currentcol) == '.' || (line.charAt(currentcol) == '+' || (line.charAt(currentcol) == '-')))) {
-                                identifier += line.charAt(currentcol);
+                        int currentCol = col + 1;
+                        while (currentCol != line.length() && line.charAt(currentCol) != ' ' && line.charAt(currentCol) != '(' && line.charAt(currentCol) != ')' && line.charAt(currentCol) != '[' && line.charAt(currentCol) != ']' && line.charAt(currentCol) != '{' && line.charAt(currentCol) != '}' && line.charAt(currentCol) != '~') {
+                            identifier += line.charAt(currentCol);
+                            currentCol++;
+                        }
+                        int currentcol = 1;
+                        while ((identifier.length() - 1) >= currentcol) {
+                            if ((identifier.charAt(currentcol) >= 'a' && identifier.charAt(currentcol) <= 'z') || (identifier.charAt(currentcol) >= '0' && identifier.charAt(currentcol) <= '9') || (identifier.charAt(currentcol) == '.' || (identifier.charAt(currentcol) == '+' || (identifier.charAt(currentcol) == '-')))) {
                                 currentcol++;
                             } else {
-                                // states
-                                ArrayList<Integer> states = new ArrayList<Integer>();
-                                if (line.indexOf("{", currentcol) != -1)
-                                    states.add(line.indexOf("{", currentcol));
-                                if (line.indexOf("}", currentcol) != -1)
-                                    states.add(line.indexOf("}", currentcol));
-                                if (line.indexOf("(", currentcol) != -1)
-                                    states.add(line.indexOf("(", currentcol));
-                                if (line.indexOf(")", currentcol) != -1)
-                                    states.add(line.indexOf(")", currentcol));
-                                if (line.indexOf("[", currentcol) != -1)
-                                    states.add(line.indexOf("[", currentcol));
-                                if (line.indexOf("]", currentcol) != -1)
-                                    states.add(line.indexOf("]", currentcol));
-                                if (line.indexOf(" ", currentcol) != -1)
-                                    states.add(line.indexOf(" ", currentcol));
-                                if (line.indexOf("~", currentcol) != -1)
-                                    states.add(line.indexOf("~", currentcol));
-
-                                states.add(line.length());
-
-                                int min = Collections.min(states);
-                                String edited = line.substring(currentcol, min);
-                                identifier += edited;
-                                printErrorMessages(identifier);
                                 isIdentifier = false;
-                                col += identifier.length();
-                                break;
+                                printErrorMessages(identifier);
                             }
                         }
                         if (isIdentifier) {
@@ -135,36 +112,33 @@ public class Main {
                             col += identifier.length();
                         }
                     }
-
-                // Detect characters
+                    // Detect characters
                 } else if (currentCh == '\'') {
                     String chars; // variable to keep char
                     int currentcol = col + 1;
                     boolean isAChar = false;
 
                     // Figure out where the character ends
-                    while(line.length() - 1 >= currentcol){
-                        if(line.indexOf('\'', col + 1) == -1)
-                        // If there is no second apostrophe after the first one, break the loop.
+                    while (line.length() - 1 >= currentcol) {
+                        if (line.indexOf('\'', col + 1) == -1)
+                            // If there is no second apostrophe after the first one, break the loop.
                             break;
-                        if(line.charAt(currentcol) == '\\'){
-                        // If character is \', this can not end the character so increment currentcol by not 1 but 2.
+                        if (line.charAt(currentcol) == '\\') {
+                            // If character is \', this can not end the character so increment currentcol by not 1 but 2.
                             currentcol += 2;
-                        }
-                        else if(line.charAt(currentcol) == '\''){
-                        // if apostrophe for end of the character is found, break the loop.
+                        } else if (line.charAt(currentcol) == '\'') {
+                            // if apostrophe for end of the character is found, break the loop.
                             isAChar = true;
                             break;
-                        }
-                        else
+                        } else
                             currentcol++;
                     }
 
-                    if(!isAChar){ // If it is not a string give an error and exit the system.
+                    if (!isAChar) { // If it is not a string give an error and exit the system.
                         chars = line.substring(col);
                         printErrorMessages(chars);
                     }
-                    chars = line.substring(col, currentcol+1);
+                    chars = line.substring(col, currentcol + 1);
                     if (chars.length() == 3 && chars.charAt(1) != '\\' && chars.charAt(1) != '\'' && chars.charAt(2) == '\'') {
                         tokens += "CHAR " + row + ":" + (col + 1) + "\n";
                         col += 3;
@@ -175,35 +149,33 @@ public class Main {
                         printErrorMessages(chars);
                     }
 
-                // Detect strings
+                    // Detect strings
                 } else if (currentCh == '"') {
                     String str; // variable to keep string
                     int currentcol = col + 1;
                     boolean isAString = false;
 
                     // Figure out where the string ends
-                    while(line.length() - 1 >= currentcol){
-                        if(line.indexOf('"', col + 1) == -1)
-                        // If there is no second quotation mark after the first one, break the loop.
+                    while (line.length() - 1 >= currentcol) {
+                        if (line.indexOf('"', col + 1) == -1)
+                            // If there is no second quotation mark after the first one, break the loop.
                             break;
-                        if(line.charAt(currentcol) == '\\'){
-                        // If character is \", this can not end the string so increment currentcol by not 1 but 2.
+                        if (line.charAt(currentcol) == '\\') {
+                            // If character is \", this can not end the string so increment currentcol by not 1 but 2.
                             currentcol += 2;
-                        }
-                        else if(line.charAt(currentcol) == '"'){
-                        // if quotation mark for end of the string is found, break the loop.
+                        } else if (line.charAt(currentcol) == '"') {
+                            // if quotation mark for end of the string is found, break the loop.
                             isAString = true;
                             break;
-                        }
-                        else
+                        } else
                             currentcol++;
                     }
 
-                    if(!isAString){ // If it is not a string give an error and exit the system.
+                    if (!isAString) { // If it is not a string give an error and exit the system.
                         str = line.substring(col);
                         printErrorMessages(str);
                     }
-                    str = line.substring(col, currentcol+1);
+                    str = line.substring(col, currentcol + 1);
                     if (str.length() > 2 && str.charAt(str.length() - 1) == '"' && !str.contains("\\")) {
                         tokens += "STRING " + row + ":" + (col + 1) + "\n";
                         col += str.length();
@@ -239,6 +211,7 @@ public class Main {
         printer.print(tokens);
         printer.close();
     }
+
     public static void printErrorMessages(String error) {
         System.out.println(tokens);
         printer.println(tokens);
@@ -248,25 +221,26 @@ public class Main {
         System.exit(1);
     }
 
-    public static boolean isAKeyword(String line, String keyword){
+    public static boolean isAKeyword(String line, String keyword) {
         String str;
-        if(keyword.equals("true") || keyword.equals("false"))
+        if (keyword.equals("true") || keyword.equals("false"))
             str = "boolean";
         else
             str = keyword;
         if (line.substring(col).length() >= keyword.length() && line.substring(col, col + keyword.length()).equals(keyword)) {
             if (line.substring(col).length() == keyword.length()) {
-                tokens +=  str.toUpperCase() + " " + row + ":" + (col + 1) + "\n";
+                tokens += str.toUpperCase() + " " + row + ":" + (col + 1) + "\n";
                 col = col + keyword.length();
                 return true;
             } else if (line.charAt(col + keyword.length()) == ' ' || line.charAt(col + keyword.length()) == '~' || line.charAt(col + keyword.length()) == '(' || line.charAt(col + keyword.length()) == ')' || line.charAt(col + keyword.length()) == '[' || line.charAt(col + keyword.length()) == ']' || line.charAt(col + keyword.length()) == '{' || line.charAt(col + keyword.length()) == '}' || col + keyword.length() == line.length() - 1) {
-                tokens +=  str.toUpperCase() + " " + row + ":" + (col + 1) + "\n";
+                tokens += str.toUpperCase() + " " + row + ":" + (col + 1) + "\n";
                 col = col + keyword.length();
                 return true;
             }
         }
         return false;
     }
+
     public static void isNumber(String line, char currentCh) {
         String number = "" + currentCh;
         int currentcol = col + 1;
@@ -340,7 +314,7 @@ public class Main {
                                 break;
                             }
                         }
-                    }else {
+                    } else {
                         printErrorMessages(number);
                     }
                     if ((number.length() - 1) >= currentIndex && (number.charAt(currentIndex) == 'E' || number.charAt(currentIndex) == 'e')) {
@@ -435,11 +409,10 @@ public class Main {
                         }
                         tokens += "NUMBER " + row + ":" + (col + 1) + "\n";
                         col += number.length();
-                    }
-                    else if(number.length() == 2 && !number.contains("e") && !number.contains("E") && (number.charAt(1) >= '0' && number.charAt(1) <= '9')){
+                    } else if (number.length() == 2 && !number.contains("e") && !number.contains("E") && (number.charAt(1) >= '0' && number.charAt(1) <= '9')) {
                         tokens += "NUMBER " + row + ":" + (col + 1) + "\n";
                         col += number.length();
-                    }else {
+                    } else {
                         printErrorMessages(number);
                     }
                 }
@@ -471,8 +444,7 @@ public class Main {
                 }
                 tokens += "NUMBER " + row + ":" + (col + 1) + "\n";
                 col += number.length();
-            }
-            else{
+            } else {
                 System.out.println(tokens);
                 printer.println(tokens);
                 System.out.println("LEXICAL ERROR [" + row + ":" + (col + 1) + "]: Invalid token '" + number + "'");
@@ -482,10 +454,11 @@ public class Main {
             }
         }
     }
-    public static boolean isCorrectNumber(String str){
+
+    public static boolean isCorrectNumber(String str) {
         int i = 0;
-        while(i < str.length()){
-            if((str.charAt(i) <= '9' && str.charAt(i) >= '0' )|| str.charAt(i) == '+' || str.charAt(i) == '.' || str.charAt(i) == '.')
+        while (i < str.length()) {
+            if ((str.charAt(i) <= '9' && str.charAt(i) >= '0') || str.charAt(i) == '+' || str.charAt(i) == '.' || str.charAt(i) == '.')
                 i++;
             else
                 return false;
