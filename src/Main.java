@@ -50,7 +50,7 @@ public class Main {
                     col = 0;
                     break;
 
-                    // Detect brackets
+                // Detect brackets
                 } else if (currentCh == '(') {
                     col++;
                     tokens += "LEFTPAR " + row + ":" + col + "\n";
@@ -69,27 +69,34 @@ public class Main {
                 } else if (currentCh == '}') {
                     col++;
                     tokens += "RIGHTCURLYB " + row + ":" + col + "\n";
-                    //HAVING + - or . at the beginning
+
+                // Detect identifiers or numbers (starting with dot(.), plus(+) or minus(-))
                 } else if ((currentCh == '.' || currentCh == '+' || currentCh == '-')) {
                     String str = "" + currentCh;
                     int currentCol = col + 1;
+                    // Take whole token until encounter a bracket or space
                     while (currentCol != line.length() && line.charAt(currentCol) != ' ' && line.charAt(currentCol) != '(' && line.charAt(currentCol) != ')' && line.charAt(currentCol) != '[' && line.charAt(currentCol) != ']' && line.charAt(currentCol) != '{' && line.charAt(currentCol) != '}' && line.charAt(currentCol) != '~') {
                         str += line.charAt(currentCol);
                         currentCol++;
                     }
+                    // If it is just a single dot(.), plus(+) or minus(-), it is an identifier
                     if (str.length() == 1) {
                         tokens += "IDENTIFIER " + row + ":" + (col + 1) + "\n";
                         col++;
+                    // Else it can be a number starting with dot(.), plus(+) or minus(-)
                     } else if ((currentCh == '+' || currentCh == '-') && (line.charAt(col + 1) == '.' || (line.charAt(col + 1) >= '0' && line.charAt(col + 1) <= '9'))) {
                         isNumber(line, currentCh);
                     } else if (currentCh == '.' && (line.charAt(col + 1) >= '0' && line.charAt(col + 1) <= '9')) {
                         isNumber(line, currentCh);
-                    } else {
+                    }
+                    // Otherwise it is an invalid input, so print error message
+                    else {
                         printErrorMessages(str);
                     }
-                    //IDENTIFIER & KEYWORDS & BOOLEAN
+
+                // Detect identifier & keyword & boolean
                 } else if ((currentCh >= 'a' && currentCh <= 'z') || currentCh == '!' || currentCh == '*' || currentCh == '/' || currentCh == ':' || currentCh == '<' || currentCh == '>' || currentCh == '=' || currentCh == '?') {
-                    //KEYWORDS
+                    // If the lexeme is not a keyword
                     if (!(isAKeyword(line, "true") || isAKeyword(line, "false") || isAKeyword(line, "define") || isAKeyword(line, "let") || isAKeyword(line, "cond") || isAKeyword(line, "if") || isAKeyword(line, "begin"))) {
                         String identifier = "" + line.charAt(col);
                         boolean isIdentifier = true;
@@ -107,6 +114,7 @@ public class Main {
                                 printErrorMessages(identifier);
                             }
                         }
+                        // If it is identifier ad it to tokens String
                         if (isIdentifier) {
                             tokens += "IDENTIFIER " + row + ":" + (col + 1) + "\n";
                             col += identifier.length();
@@ -149,7 +157,7 @@ public class Main {
                         printErrorMessages(chars);
                     }
 
-                    // Detect strings
+                // Detect strings
                 } else if (currentCh == '"') {
                     String str; // variable to keep string
                     int currentcol = col + 1;
@@ -171,7 +179,8 @@ public class Main {
                             currentcol++;
                     }
 
-                    if (!isAString) { // If it is not a string give an error and exit the system.
+                    // If it is not a string give an error and exit the system.
+                    if (!isAString) {
                         str = line.substring(col);
                         printErrorMessages(str);
                     }
@@ -212,6 +221,7 @@ public class Main {
         printer.close();
     }
 
+    // Method to print error messages and tokens up to error.
     public static void printErrorMessages(String error) {
         System.out.println(tokens);
         printer.println(tokens);
@@ -221,12 +231,15 @@ public class Main {
         System.exit(1);
     }
 
+    // Method to find out if the given lexeme is keyword or not.
     public static boolean isAKeyword(String line, String keyword) {
         String str;
+        // If it is lexeme is true or false it means it is boolean
         if (keyword.equals("true") || keyword.equals("false"))
             str = "boolean";
         else
             str = keyword;
+
         if (line.substring(col).length() >= keyword.length() && line.substring(col, col + keyword.length()).equals(keyword)) {
             if (line.substring(col).length() == keyword.length()) {
                 tokens += str.toUpperCase() + " " + row + ":" + (col + 1) + "\n";
