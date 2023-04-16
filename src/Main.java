@@ -235,6 +235,7 @@ public class Main {
             row++; // Increment row at the end of each line
         }
         // If there is no invalid token, print all of them
+        tokens = tokens.trim();
         System.out.println(tokens);
         printer.print(tokens);
         printer.close();
@@ -242,6 +243,7 @@ public class Main {
 
     // Method to print error messages and tokens up to error.
     public static void printErrorMessages(String error) {
+        tokens = tokens.trim();
         System.out.println(tokens);
         printer.println(tokens);
         System.out.println("LEXICAL ERROR [" + row + ":" + (col + 1) + "]: Invalid token '" + error + "'");
@@ -479,7 +481,7 @@ public class Main {
     public static boolean isCorrectNumber(String str) {
         int i = 0;
         while (i < str.length()) {
-            if ((str.charAt(i) <= '9' && str.charAt(i) >= '0') || str.charAt(i) == '+' || str.charAt(i) == '.' || str.charAt(i) == '.')
+            if ((str.charAt(i) <= '9' && str.charAt(i) >= '0') || str.charAt(i) == '+' || str.charAt(i) == '.' || str.charAt(i) == '-')
                 i++;
             else
                 return false;
