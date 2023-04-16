@@ -279,61 +279,74 @@ public class Main {
         return false;
     }
 
+    // Method to find out if the given current char generates number or not.
     public static void isNumber(String line, char currentCh) {
         String number = "" + currentCh;
         int currentcol = col + 1;
+        // Take the lexeme character by character until encounter with the space or bracket or tilde
         while ((line.length() - 1) >= currentcol && (line.charAt(currentcol) != '~' && line.charAt(currentcol) != ' ' && line.charAt(currentcol) != '('
                 && line.charAt(currentcol) != ')' && line.charAt(currentcol) != '{' && line.charAt(currentcol) != '}' && line.charAt(col + 1) != '[' && line.charAt(col + 1) != ']')) {
-            if ((line.length() - 1) >= currentcol) {
+            if ((line.length() - 1) >= currentcol) { // if it is not an end of the line go on
                 number += line.charAt(currentcol);
                 currentcol++;
             } else {
                 break;
             }
         }
+
+        // If lexeme begins with 0b, it can be a binary number
         if (currentCh == '0' && line.charAt(col + 1) == 'b') {
             boolean isBinary = true;
             int counterCol = col + 2;
-            while (true) {
+
+            while (true) { // If all numbers after b are 0 or 1, it is a binary number. Otherwise print an error message
                 if ((number.length() - 1) >= col && (line.charAt(counterCol) == '0' || line.charAt(counterCol) == '1')) {
                     counterCol++;
-                    if (number.length() == counterCol) {
+                    if (number.length() == counterCol) { // Break the loop when you reach the end of the number
                         break;
                     }
-                } else {
+                }
+                else {
                     isBinary = false;
                     printErrorMessages(number);
                     break;
                 }
             }
+            // If it is a binary number, add it to tokens string
             if (isBinary) {
                 tokens += "NUMBER " + row + ":" + (col + 1) + "\n";
                 col += number.length();
             }
+        // If lexeme begins with 0x, it can be a hexadecimal number
         } else if (currentCh == '0' && line.charAt(col + 1) == 'x') {
             boolean isHex = true;
             int counterCol = col + 2;
-            while (true) {
+            while (true) { // If all character after b are numbers or letter between a and f, it is a hexadecimal number
                 if ((number.length() - 1) >= col && ((line.charAt(counterCol) <= '9' && line.charAt(counterCol) >= '0') || (line.charAt(counterCol) <= 'F' && line.charAt(counterCol) >= 'A') || (line.charAt(counterCol) <= 'f' && line.charAt(counterCol) >= 'a'))) {
                     counterCol++;
-                    if (number.length() == counterCol) {
+                    if (number.length() == counterCol) { // Break the loop when you reach the end of the number
                         break;
                     }
-                } else {
+                }
+                else {  // Otherwise print an error message
                     isHex = false;
                     printErrorMessages(number);
                     break;
                 }
             }
+            // If it is a hexadecimal number, add it to tokens string
             if (isHex) {
                 tokens += "NUMBER " + row + ":" + (col + 1) + "\n";
                 col += number.length();
             }
-        } else {
+        }
+        else {
+            // If it contains point, it can be a floating point number
             if (number.contains(".")) {
+                // Check if first character of number is plus, minus or number or not
                 if (number.charAt(0) == '+' || number.charAt(0) == '-' || (number.charAt(0) >= '0' && number.charAt(0) <= '9')) {
                     int currentIndex = 1;
-                    while (true) {
+                    while (true) { // Until encounter with point increment index for each decimal digit
                         if (number.charAt(currentIndex) >= '0' && number.charAt(currentIndex) <= '9') {
                             currentIndex++;
                         } else if (number.charAt(currentIndex) != '.') {
@@ -343,42 +356,52 @@ public class Main {
                         }
                     }
                     currentIndex++;
+                    // After point there must be at least 1 decimal digit, check it
                     if ((number.length() - 1) >= currentIndex && number.charAt(currentIndex) >= '0' && number.charAt(currentIndex) <= '9') {
                         currentIndex++;
-                        while (true) {
+                        while (true) { // Until encounter with character other than number, increment current index
                             if ((number.length() - 1) >= currentIndex && number.charAt(currentIndex) >= '0' && number.charAt(currentIndex) <= '9') {
                                 currentIndex++;
-                            } else {
+                            }
+                            else {
                                 break;
                             }
                         }
+                    // If after the point there is no decimal digit, print an error message and exit the system
                     } else {
                         printErrorMessages(number);
                     }
+
+                    // After decimal digits it can contain 'E' or 'e'
                     if ((number.length() - 1) >= currentIndex && (number.charAt(currentIndex) == 'E' || number.charAt(currentIndex) == 'e')) {
                         currentIndex++;
+                        // After 'E' or 'e', it must continue with number, minus or plus
                         if (number.charAt(currentIndex) == '+' || number.charAt(currentIndex) == '-' || (number.charAt(currentIndex) >= '0' && number.charAt(currentIndex) <= '9')) {
                             currentIndex++;
-                            while (number.length() > currentIndex) {
+                            while (number.length() > currentIndex) { // Then, it can continue with decimal digits
                                 if ((number.length() - 1) >= currentIndex && number.charAt(currentIndex) >= '0' && number.charAt(currentIndex) <= '9') {
                                     currentIndex++;
-                                } else {
+                                } else { // If it does not continue with decimal digits, print an error message
                                     printErrorMessages(number);
                                 }
                             }
                             tokens += "NUMBER " + row + ":" + (col + 1) + "\n";
                             col += number.length();
                         }
+                    // If it does not have 'E' or 'e', it is still a number
                     } else if (number.length() == currentIndex) {
                         tokens += "NUMBER " + row + ":" + (col + 1) + "\n";
                         col += number.length();
-                    } else {
+                    }
+                    else {
                         printErrorMessages(number);
                     }
                 }
 
+                // Number can start with a point
                 if (number.charAt(0) == '.') {
                     int currentIndex = 1;
+                    // After point there must be at least 1 decimal digit
                     if (number.charAt(currentIndex) >= '0' && number.charAt(currentIndex) <= '9') {
                         currentIndex++;
                         while (true) {
@@ -389,23 +412,27 @@ public class Main {
                             }
                         }
                     }
+                    // After decimal digits it can contain 'E' or 'e'
                     if ((number.length() - 1) >= currentIndex && (number.charAt(currentIndex) == 'E' || number.charAt(currentIndex) == 'e')) {
                         currentIndex++;
+                        // After 'E' or 'e', it must continue with number, minus or plus
                         if (number.charAt(currentIndex) == '+' || number.charAt(currentIndex) == '-' || (number.charAt(currentIndex) >= '0' && number.charAt(currentIndex) <= '9')) {
-
+                            // If first character after the point is not decimal digit, then second one must be a decimal digit. Otherwise print an error message
                             if (!(number.charAt(currentIndex) >= '0' && number.charAt(currentIndex) <= '9') && !(number.charAt(currentIndex + 1) >= '0' && number.charAt(currentIndex + 1) <= '9')) {
                                 printErrorMessages(number);
                             }
-                            while (number.length() > currentIndex) {
+                            while (number.length() > currentIndex) { // Then, it can continue with decimal digits
                                 if ((line.length() - 1) >= currentIndex && number.charAt(currentIndex) >= '0' && number.charAt(currentIndex) <= '9') {
                                     currentIndex++;
-                                } else {
+                                }
+                                else { // If it does not continue with decimal digits, print an error message
                                     printErrorMessages(number);
                                 }
                             }
                             tokens += "NUMBER " + row + ":" + (col + 1) + "\n";
                             col += number.length();
                         }
+                    // If it does not have 'E' or 'e', it is still a number
                     } else if (number.length() == currentIndex) {
                         tokens += "NUMBER " + row + ":" + (col + 1) + "\n";
                         col += number.length();
@@ -414,14 +441,19 @@ public class Main {
                     }
                 }
 
-            } else if (number.contains("E") || number.contains("e")) {
+            }
+            // If number does not contain point but 'E' or 'e'
+            else if (number.contains("E") || number.contains("e")) {
                 int currentIndex = 0;
+                // First character of the number must be plus, minus or decimal digit
                 if (number.charAt(currentIndex) == '+' || number.charAt(currentIndex) == '-' || (number.charAt(currentIndex) >= '0' && number.charAt(currentIndex) <= '9')) {
+                    // If first character after the point is not decimal digit, then second one must be a decimal digit. Otherwise print an error message
                     if (!(number.charAt(currentIndex) >= '0' && number.charAt(currentIndex) <= '9') && !(number.charAt(currentIndex + 1) >= '0' && number.charAt(currentIndex + 1) <= '9')) {
                         printErrorMessages(number);
                     }
                     currentIndex++;
-                    while (true) {
+
+                    while (true) { // Until encounter with 'E' or 'e', increment index for each decimal digit
                         if (number.charAt(currentIndex) >= '0' && number.charAt(currentIndex) <= '9') {
                             currentIndex++;
                         } else if (number.charAt(currentIndex) == 'E' || number.charAt(currentIndex) == 'e') {
@@ -433,8 +465,10 @@ public class Main {
                     }
 
                     currentIndex++;
-                    if (number.length() > 2 && (number.charAt(currentIndex) == '+' || number.charAt(currentIndex) == '-' || (number.charAt(currentIndex) >= '0' && number.charAt(currentIndex) <= '9'))) {
 
+                    // After 'E' or 'e', it must continue with number, minus or plus
+                    if (number.length() > 2 && (number.charAt(currentIndex) == '+' || number.charAt(currentIndex) == '-' || (number.charAt(currentIndex) >= '0' && number.charAt(currentIndex) <= '9'))) {
+                        // If first character after 'e'/'E' is not decimal digit, then second one must be a decimal digit. Otherwise print an error message
                         if (!(number.charAt(currentIndex) >= '0' && number.charAt(currentIndex) <= '9') && !(number.charAt(currentIndex + 1) >= '0' && number.charAt(currentIndex + 1) <= '9')) {
                             printErrorMessages(number);
                         }
@@ -447,7 +481,8 @@ public class Main {
                         }
                         tokens += "NUMBER " + row + ":" + (col + 1) + "\n";
                         col += number.length();
-                    } else if (number.length() == 2 && !number.contains("e") && !number.contains("E") && (number.charAt(1) >= '0' && number.charAt(1) <= '9')) {
+                    }
+                    else if (number.length() == 2 && !number.contains("e") && !number.contains("E") && (number.charAt(1) >= '0' && number.charAt(1) <= '9')) {
                         tokens += "NUMBER " + row + ":" + (col + 1) + "\n";
                         col += number.length();
                     } else {
@@ -455,18 +490,22 @@ public class Main {
                     }
                 }
 
-            } else if ((number.charAt(0) == '+' || number.charAt(0) == '-' || (number.charAt(0) >= '0' && number.charAt(0) <= '9')) && isCorrectNumber(number)) {
+            }
+            // If number does not contain point or 'e' or 'E, it can be decimal signed integer, first character of it must be plus, minus or decimal digit
+            else if ((number.charAt(0) == '+' || number.charAt(0) == '-' || (number.charAt(0) >= '0' && number.charAt(0) <= '9')) && isCorrectNumber(number)) {
                 int currentIndex = 1;
+                // If first character after the point is not decimal digit, then second one must be a decimal digit. Otherwise print an error message
                 if (number.length() > currentIndex && !(number.charAt(currentIndex) >= '0' && number.charAt(currentIndex) <= '9') && !(number.charAt(currentIndex + 1) >= '0' && number.charAt(currentIndex + 1) <= '9')) {
                     printErrorMessages(number);
                 }
-                while (number.length() > currentIndex) {
+                while (number.length() > currentIndex) { // Following the first character, all digits must be decimal digit
                     if (number.charAt(currentIndex) >= '0' && number.charAt(currentIndex) <= '9') {
                         if (number.length() != currentIndex + 1)
                             currentIndex++;
                         else
                             break;
-                    } else {
+                    }
+                    else {
                         printErrorMessages(number);
                     }
                 }
@@ -478,6 +517,7 @@ public class Main {
         }
     }
 
+    // Method to figure out if given number contains character other than decimal digit, plus, minus or point
     public static boolean isCorrectNumber(String str) {
         int i = 0;
         while (i < str.length()) {
