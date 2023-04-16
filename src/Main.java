@@ -96,8 +96,9 @@ public class Main {
 
                 // Detect identifier & keyword & boolean
                 } else if ((currentCh >= 'a' && currentCh <= 'z') || currentCh == '!' || currentCh == '*' || currentCh == '/' || currentCh == ':' || currentCh == '<' || currentCh == '>' || currentCh == '=' || currentCh == '?') {
-                    // If the lexeme is not a keyword
+                    // Check the lexeme is a keyword or not
                     if (!(isAKeyword(line, "true") || isAKeyword(line, "false") || isAKeyword(line, "define") || isAKeyword(line, "let") || isAKeyword(line, "cond") || isAKeyword(line, "if") || isAKeyword(line, "begin"))) {
+                        // If not a keyword, it can be an identifier. Take the lexeme character by character until it encounters a space or a bracket or a tilde
                         String identifier = "" + line.charAt(col);
                         boolean isIdentifier = true;
                         int currentCol = col + 1;
@@ -105,28 +106,31 @@ public class Main {
                             identifier += line.charAt(currentCol);
                             currentCol++;
                         }
+                        // Figure out if it's really identifier by checking the rules of being identifier
                         int currentcol = 1;
                         while ((identifier.length() - 1) >= currentcol) {
                             if ((identifier.charAt(currentcol) >= 'a' && identifier.charAt(currentcol) <= 'z') || (identifier.charAt(currentcol) >= '0' && identifier.charAt(currentcol) <= '9') || (identifier.charAt(currentcol) == '.' || (identifier.charAt(currentcol) == '+' || (identifier.charAt(currentcol) == '-')))) {
                                 currentcol++;
-                            } else {
+                            }
+                            // If it is not an identifier, print error message
+                            else {
                                 isIdentifier = false;
                                 printErrorMessages(identifier);
                             }
                         }
-                        // If it is identifier ad it to tokens String
+                        // If it is identifier add it to tokens String
                         if (isIdentifier) {
                             tokens += "IDENTIFIER " + row + ":" + (col + 1) + "\n";
                             col += identifier.length();
                         }
                     }
-                    // Detect characters
+                // Detect characters
                 } else if (currentCh == '\'') {
-                    String chars; // variable to keep char
+                    String chars; // Variable to keep char
                     int currentcol = col + 1;
                     boolean isAChar = false;
 
-                    // Figure out where the character ends
+                    // Find the index of where the character ends
                     while (line.length() - 1 >= currentcol) {
                         if (line.indexOf('\'', col + 1) == -1)
                             // If there is no second apostrophe after the first one, break the loop.
@@ -135,24 +139,28 @@ public class Main {
                             // If character is \', this can not end the character so increment currentcol by not 1 but 2.
                             currentcol += 2;
                         } else if (line.charAt(currentcol) == '\'') {
-                            // if apostrophe for end of the character is found, break the loop.
+                            // If apostrophe for end of the character is found, break the loop.
                             isAChar = true;
                             break;
                         } else
                             currentcol++;
                     }
 
-                    if (!isAChar) { // If it is not a string give an error and exit the system.
+                    if (!isAChar) { // If it is not a character give an error and exit the system.
                         chars = line.substring(col);
                         printErrorMessages(chars);
                     }
+                    // Figure out if it's really character by checking the rules of being character
                     chars = line.substring(col, currentcol + 1);
+                    // If character is in ( 'a' ) format
                     if (chars.length() == 3 && chars.charAt(1) != '\\' && chars.charAt(1) != '\'' && chars.charAt(2) == '\'') {
                         tokens += "CHAR " + row + ":" + (col + 1) + "\n";
                         col += 3;
+                    // If character is '\\' or '\''
                     } else if (chars.length() == 4 && chars.charAt(3) == '\'' && chars.charAt(1) == '\\' && (chars.charAt(2) == '\\' || chars.charAt(2) == '\'')) {
                         tokens += "CHAR " + row + ":" + (col + 1) + "\n";
                         col += 4;
+                    // Else it is an invalid token, print error message and exit the system
                     } else {
                         printErrorMessages(chars);
                     }
@@ -163,7 +171,7 @@ public class Main {
                     int currentcol = col + 1;
                     boolean isAString = false;
 
-                    // Figure out where the string ends
+                    // Find the index of where the string ends
                     while (line.length() - 1 >= currentcol) {
                         if (line.indexOf('"', col + 1) == -1)
                             // If there is no second quotation mark after the first one, break the loop.
@@ -184,11 +192,17 @@ public class Main {
                         str = line.substring(col);
                         printErrorMessages(str);
                     }
+
+                    // Figure out if it's really string by checking the rules of being string
                     str = line.substring(col, currentcol + 1);
+                    // If its length greater than 2 -> if it is not ""
+                    // and it finishes with quotation mark also does not contain any backslash, it is definitely a string
                     if (str.length() > 2 && str.charAt(str.length() - 1) == '"' && !str.contains("\\")) {
                         tokens += "STRING " + row + ":" + (col + 1) + "\n";
                         col += str.length();
-                    } else if (str.length() > 2 && str.charAt(str.length() - 1) == '"' && str.contains("\\")) {
+                    }
+                    // If it contains backslash, check all backslashes continue with a backslash or quotation mark
+                    else if (str.length() > 2 && str.charAt(str.length() - 1) == '"' && str.contains("\\")) {
                         int count = 0;
                         boolean isValidString = true;
                         while (count != str.length() - 3) {
@@ -201,21 +215,26 @@ public class Main {
                                 printErrorMessages(str);
                             }
                         }
+                        // If it is a string add it to tokens String
                         if (isValidString) {
                             tokens += "STRING " + row + ":" + (col + 1) + "\n";
                             col += str.length();
                         }
-                    } else {
+                    }
+                    else {
                         printErrorMessages(str);
                     }
+
+                // Detect numbers
                 } else if ((currentCh <= '9' && currentCh >= '0') || currentCh == '+' || currentCh == '-' || currentCh == '.') {
                     isNumber(line, currentCh);
                 } else {
                     printErrorMessages("" + currentCh);
                 }
             }
-            row++;
+            row++; // Increment row at the end of each line
         }
+        // If there is no invalid token, print all of them
         System.out.println(tokens);
         printer.print(tokens);
         printer.close();
@@ -240,17 +259,21 @@ public class Main {
         else
             str = keyword;
 
+        // If lexeme is equal to given keyword
         if (line.substring(col).length() >= keyword.length() && line.substring(col, col + keyword.length()).equals(keyword)) {
+            // If taken lexeme is at the end of the line
             if (line.substring(col).length() == keyword.length()) {
                 tokens += str.toUpperCase() + " " + row + ":" + (col + 1) + "\n";
                 col = col + keyword.length();
                 return true;
+            // After the lexeme, if there is space or bracket or comment line
             } else if (line.charAt(col + keyword.length()) == ' ' || line.charAt(col + keyword.length()) == '~' || line.charAt(col + keyword.length()) == '(' || line.charAt(col + keyword.length()) == ')' || line.charAt(col + keyword.length()) == '[' || line.charAt(col + keyword.length()) == ']' || line.charAt(col + keyword.length()) == '{' || line.charAt(col + keyword.length()) == '}' || col + keyword.length() == line.length() - 1) {
                 tokens += str.toUpperCase() + " " + row + ":" + (col + 1) + "\n";
                 col = col + keyword.length();
                 return true;
             }
         }
+        // Otherwise it is not a keyword
         return false;
     }
 
