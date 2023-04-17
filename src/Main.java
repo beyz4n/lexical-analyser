@@ -295,7 +295,7 @@ public class Main {
         }
 
         // If lexeme begins with 0b, it can be a binary number
-        if (currentCh == '0' && line.charAt(col + 1) == 'b') {
+        if (number.length() >= 3 && currentCh == '0' && line.charAt(col + 1) == 'b') {
             boolean isBinary = true;
             int counterCol = col + 2;
 
@@ -318,7 +318,7 @@ public class Main {
                 col += number.length();
             }
         // If lexeme begins with 0x, it can be a hexadecimal number
-        } else if (currentCh == '0' && line.charAt(col + 1) == 'x') {
+        } else if (number.length() >= 3 && currentCh == '0' && line.charAt(col + 1) == 'x') {
             boolean isHex = true;
             int counterCol = col + 2;
             while (true) { // If all character after b are numbers or letter between a and f, it is a hexadecimal number
