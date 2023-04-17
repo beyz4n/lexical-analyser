@@ -3,7 +3,7 @@ import java.io.FileNotFoundException;
 import java.io.PrintWriter;
 import java.util.Scanner;
 
-public class Main {
+public class Project1_150120077_150120047_150121068 {
 
     // Variables to keep track of row and column values
     public static int row = 1;
