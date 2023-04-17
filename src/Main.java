@@ -73,7 +73,8 @@ public class Main {
                     String str = "" + currentCh;
                     int currentCol = col + 1;
                     // Take whole token until encounter a bracket or space
-                    while (currentCol != line.length() && line.charAt(currentCol) != ' ' && line.charAt(currentCol) != '(' && line.charAt(currentCol) != ')' && line.charAt(currentCol) != '[' && line.charAt(currentCol) != ']' && line.charAt(currentCol) != '{' && line.charAt(currentCol) != '}' && line.charAt(currentCol) != '~') {
+                    while (currentCol != line.length() && line.charAt(currentCol) != ' ' && line.charAt(currentCol) != '(' && line.charAt(currentCol) != ')' &&
+                            line.charAt(currentCol) != '[' && line.charAt(currentCol) != ']' && line.charAt(currentCol) != '{' && line.charAt(currentCol) != '}' && line.charAt(currentCol) != '~') {
                         str += line.charAt(currentCol);
                         currentCol++;
                     }
@@ -95,19 +96,22 @@ public class Main {
                 // Detect identifier & keyword & boolean
                 } else if ((currentCh >= 'a' && currentCh <= 'z') || currentCh == '!' || currentCh == '*' || currentCh == '/' || currentCh == ':' || currentCh == '<' || currentCh == '>' || currentCh == '=' || currentCh == '?') {
                     // Check the lexeme is a keyword or not
-                    if (!(isAKeyword(line, "true") || isAKeyword(line, "false") || isAKeyword(line, "define") || isAKeyword(line, "let") || isAKeyword(line, "cond") || isAKeyword(line, "if") || isAKeyword(line, "begin"))) {
+                    if (!(isAKeyword(line, "true") || isAKeyword(line, "false") || isAKeyword(line, "define") || isAKeyword(line, "let") || isAKeyword(line, "cond") ||
+                            isAKeyword(line, "if") || isAKeyword(line, "begin"))) {
                         // If not a keyword, it can be an identifier. Take the lexeme character by character until it encounters a space or a bracket or a tilde
                         String identifier = "" + line.charAt(col);
                         boolean isIdentifier = true;
                         int currentCol = col + 1;
-                        while (currentCol != line.length() && line.charAt(currentCol) != ' ' && line.charAt(currentCol) != '(' && line.charAt(currentCol) != ')' && line.charAt(currentCol) != '[' && line.charAt(currentCol) != ']' && line.charAt(currentCol) != '{' && line.charAt(currentCol) != '}' && line.charAt(currentCol) != '~') {
+                        while (currentCol != line.length() && line.charAt(currentCol) != ' ' && line.charAt(currentCol) != '(' && line.charAt(currentCol) != ')' &&
+                                line.charAt(currentCol) != '[' && line.charAt(currentCol) != ']' && line.charAt(currentCol) != '{' && line.charAt(currentCol) != '}' && line.charAt(currentCol) != '~') {
                             identifier += line.charAt(currentCol);
                             currentCol++;
                         }
                         // Figure out if it's really identifier by checking the rules of being identifier
                         int currentcol = 1;
                         while ((identifier.length() - 1) >= currentcol) {
-                            if ((identifier.charAt(currentcol) >= 'a' && identifier.charAt(currentcol) <= 'z') || (identifier.charAt(currentcol) >= '0' && identifier.charAt(currentcol) <= '9') || (identifier.charAt(currentcol) == '.' || (identifier.charAt(currentcol) == '+' || (identifier.charAt(currentcol) == '-')))) {
+                            if ((identifier.charAt(currentcol) >= 'a' && identifier.charAt(currentcol) <= 'z') || (identifier.charAt(currentcol) >= '0' &&
+                                    identifier.charAt(currentcol) <= '9') || (identifier.charAt(currentcol) == '.' || (identifier.charAt(currentcol) == '+' || (identifier.charAt(currentcol) == '-')))) {
                                 currentcol++;
                             }
                             // If it is not an identifier, print error message
@@ -267,7 +271,8 @@ public class Main {
                 col = col + keyword.length();
                 return true;
             // After the lexeme, if there is space or bracket or comment line
-            } else if (line.charAt(col + keyword.length()) == ' ' || line.charAt(col + keyword.length()) == '~' || line.charAt(col + keyword.length()) == '(' || line.charAt(col + keyword.length()) == ')' || line.charAt(col + keyword.length()) == '[' || line.charAt(col + keyword.length()) == ']' || line.charAt(col + keyword.length()) == '{' || line.charAt(col + keyword.length()) == '}' || col + keyword.length() == line.length() - 1) {
+            } else if (line.charAt(col + keyword.length()) == ' ' || line.charAt(col + keyword.length()) == '~' || line.charAt(col + keyword.length()) == '(' || line.charAt(col + keyword.length()) == ')' ||
+                    line.charAt(col + keyword.length()) == '[' || line.charAt(col + keyword.length()) == ']' || line.charAt(col + keyword.length()) == '{' || line.charAt(col + keyword.length()) == '}' || col + keyword.length() == line.length() - 1) {
                 tokens += str.toUpperCase() + " " + row + ":" + (col + 1) + "\n";
                 col = col + keyword.length();
                 return true;
